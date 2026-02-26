@@ -2,10 +2,13 @@ const fs = require('fs');
 
 const content = fs.readFileSync('content.md', 'utf-8');
 
-const [servicesSection, caseStudiesSection] = content.split('__Case studies __');
+// The markdown file escapes parentheses like 1\)
+const unescapedContent = content.replace(/\\\)/g, ')');
 
-const servicesRaw = servicesSection.split(/(?=\d+\)\s)/).slice(1);
-const caseStudiesRaw = caseStudiesSection.split(/(?=\d+\)\s)/).slice(1);
+const [servicesSection, caseStudiesSection] = unescapedContent.split('__Case studies __');
+
+const servicesRaw = (servicesSection || "").split(/(?=\d+\)\s)/).slice(1);
+const caseStudiesRaw = (caseStudiesSection || "").split(/(?=\d+\)\s)/).slice(1);
 
 function parseList(text) {
     if (!text) return [];
@@ -16,16 +19,16 @@ const services = servicesRaw.map(s => {
     const titleMatch = s.match(/\d+\)\s(.+)/);
     const title = titleMatch ? titleMatch[1].replace(/__/g, '').replace(/\\/g, '').trim() : '';
 
-    const whatIDoMatch = s.match(/__What I Do__([\s\S]*?)__Deliverables__/);
+    const whatIDoMatch = s.match(/__What I Do__([\s\S]*?)__Deliverables__/i);
     const whatIDo = whatIDoMatch ? whatIDoMatch[1].replace(/__/g, '').replace(/\\/g, '').trim() : '';
 
-    const deliverablesMatch = s.match(/__Deliverables__([\s\S]*?)__Expected Impact__/);
+    const deliverablesMatch = s.match(/__Deliverables__([\s\S]*?)__Expected Impact__/i);
     const deliverables = parseList(deliverablesMatch ? deliverablesMatch[1] : "");
 
-    const impactMatch = s.match(/__Expected Impact__([\s\S]*?)__Projects Delivered__/);
+    const impactMatch = s.match(/__Expected Impact__([\s\S]*?)__Projects Delivered__/i);
     const expectedImpact = parseList(impactMatch ? impactMatch[1] : "");
 
-    const projectsMatch = s.match(/__Projects Delivered__([\s\S]*)/);
+    const projectsMatch = s.match(/__Projects Delivered__([\s\S]*)/i);
     const projectsDelivered = projectsMatch ? projectsMatch[1].replace(/__/g, '').replace(/\\/g, '').trim() : '';
 
     return {
@@ -36,7 +39,7 @@ const services = servicesRaw.map(s => {
         expectedImpact,
         projectsDelivered
     };
-});
+}).filter(s => s.title);
 
 const caseStudies = caseStudiesRaw.map(c => {
     const lines = c.split('\n').map(l => l.trim()).filter(l => l);
@@ -46,7 +49,7 @@ const caseStudies = caseStudiesRaw.map(c => {
     // The second line is usually the company context (e.g. "Furniture Manufacturing Company – 85 Employees")
     let company = '';
     let contextIdx = lines.findIndex(l => l.includes('Context'));
-    if (contextIdx > 1) {
+    if (contextIdx > 0) {
         company = lines.slice(1, contextIdx).join(' ').replace(/__/g, '').replace(/\\/g, '').trim();
     }
 
@@ -80,7 +83,7 @@ const caseStudies = caseStudiesRaw.map(c => {
         keyDeliverables,
         measurableImpact
     };
-});
+}).filter(c => c.title);
 
 const tsContent = `// Automatically generated from content.md
 
@@ -110,4 +113,4 @@ export const caseStudies: CaseStudyData[] = ${JSON.stringify(caseStudies, null, 
 `;
 
 fs.writeFileSync('src/data/content.ts', tsContent);
-console.log('Successfully wrote src/data/content.ts');
+console.log('Successfully wrote src/data/content.ts. Found', services.length, 'services and', caseStudies.length, 'case studies.');
