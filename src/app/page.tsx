@@ -1,6 +1,7 @@
 import Hero from "@/components/home/Hero";
 import ClientsMarquee from "@/components/home/ClientsMarquee";
-import Experience from "@/components/home/Experience";
+import ServicesSection from "@/components/home/ServicesSection";
+import CaseStudiesSection from "@/components/home/CaseStudiesSection";
 import Footer from "@/components/layout/Footer";
 import FloatingButton from "@/components/layout/FloatingButton";
 
@@ -10,7 +11,8 @@ export default function Home() {
       <div style={{ flex: 1 }}>
         <Hero />
         <ClientsMarquee />
-        <Experience />
+        <ServicesSection />
+        <CaseStudiesSection />
       </div>
       <FloatingButton />
       <Footer />
