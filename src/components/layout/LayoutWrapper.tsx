@@ -1,89 +1,96 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { X, Menu } from "lucide-react";
 
 export default function LayoutWrapper({ children }: { children: React.ReactNode }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     return (
         <div style={{ backgroundColor: '#000', minHeight: '100vh', width: '100%', overflow: 'hidden', position: 'relative' }}>
             {/* Background Menu Layer */}
-            <AnimatePresence>
-                {isMenuOpen && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.5 }}
-                        style={{
-                            position: 'absolute',
-                            inset: 0,
-                            zIndex: 0,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            padding: '2rem',
-                            color: 'white'
-                        }}
-                    >
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4rem' }}>
-                            <button
-                                onClick={() => setIsMenuOpen(false)}
-                                style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '1rem', fontWeight: 500, cursor: 'pointer', zIndex: 60 }}
-                            >
-                                <X size={24} /> Close
-                            </button>
-                        </div>
+            {mounted && (
+                <AnimatePresence>
+                    {isMenuOpen && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.5 }}
+                            style={{
+                                position: 'absolute',
+                                inset: 0,
+                                zIndex: 0,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                padding: '2rem',
+                                color: 'white'
+                            }}
+                        >
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4rem' }}>
+                                <button
+                                    onClick={() => setIsMenuOpen(false)}
+                                    style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '1rem', fontWeight: 500, cursor: 'pointer', zIndex: 60 }}
+                                >
+                                    <X size={24} /> Close
+                                </button>
+                            </div>
 
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', flex: 1, alignItems: 'center' }}>
-                            {/* Left: Robotic Arm Image */}
-                            <motion.div
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{ delay: 0.2, duration: 0.8 }}
-                                style={{ position: 'relative', width: '100%', height: '70vh', borderRadius: '1rem', overflow: 'hidden' }}
-                            >
-                                <Image
-                                    src="/robotic-arm.png"
-                                    alt="Precision Robotic Arm"
-                                    fill
-                                    style={{ objectFit: 'cover', filter: 'grayscale(100%) contrast(1.2)' }}
-                                    priority
-                                />
-                                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, transparent, #000 90%)' }} />
-                            </motion.div>
-
-                            {/* Right: Navigation Links */}
-                            <nav style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-                                <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.3 }}>
-                                    <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem' }}>Menu</p>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', flex: 1, alignItems: 'center' }}>
+                                {/* Left: Robotic Arm Image */}
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ delay: 0.2, duration: 0.8 }}
+                                    style={{ position: 'relative', width: '100%', height: '70vh', borderRadius: '1rem', overflow: 'hidden' }}
+                                >
+                                    <Image
+                                        src="/robotic-arm.png"
+                                        alt="Precision Robotic Arm"
+                                        fill
+                                        style={{ objectFit: 'cover', filter: 'grayscale(100%) contrast(1.2)' }}
+                                        priority
+                                    />
+                                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, transparent, #000 90%)' }} />
                                 </motion.div>
 
-                                {[
-                                    { name: 'Home', path: '/' },
-                                    { name: 'Services', path: '/services' },
-                                    { name: 'Case Studies', path: '/case-studies' },
-                                    { name: 'Free Templates', path: '/free-templates' }
-                                ].map((item, i) => (
-                                    <motion.div
-                                        key={item.name}
-                                        initial={{ x: -50, opacity: 0 }}
-                                        animate={{ x: 0, opacity: 1 }}
-                                        transition={{ delay: 0.4 + i * 0.1, duration: 0.5 }}
-                                    >
-                                        <Link href={item.path} onClick={() => setIsMenuOpen(false)} style={{ fontSize: '3rem', fontWeight: 600, letterSpacing: '-0.02em', color: 'white', textDecoration: 'none', transition: 'color 0.3s' }}>
-                                            {item.name}
-                                        </Link>
+                                {/* Right: Navigation Links */}
+                                <nav style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                                    <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.3 }}>
+                                        <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem' }}>Menu</p>
                                     </motion.div>
-                                ))}
-                            </nav>
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+
+                                    {[
+                                        { name: 'Home', path: '/' },
+                                        { name: 'Services', path: '/services' },
+                                        { name: 'Case Studies', path: '/case-studies' },
+                                        { name: 'Free Templates', path: '/free-templates' }
+                                    ].map((item, i) => (
+                                        <motion.div
+                                            key={item.name}
+                                            initial={{ x: -50, opacity: 0 }}
+                                            animate={{ x: 0, opacity: 1 }}
+                                            transition={{ delay: 0.4 + i * 0.1, duration: 0.5 }}
+                                        >
+                                            <Link href={item.path} onClick={() => setIsMenuOpen(false)} style={{ fontSize: '3rem', fontWeight: 600, letterSpacing: '-0.02em', color: 'white', textDecoration: 'none', transition: 'color 0.3s' }}>
+                                                {item.name}
+                                            </Link>
+                                        </motion.div>
+                                    ))}
+                                </nav>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            )}
 
             {/* Foreground Content Layer */}
             <motion.div
