@@ -12,6 +12,18 @@ const roles = [
 
 export default function Hero() {
     const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
+    const [dots, setDots] = useState<{ x: number, y: number, size: number, delay: number }[]>([]);
+
+    useEffect(() => {
+        // Generate random dots on client side to avoid hydration mismatch
+        const newDots = Array.from({ length: 20 }).map(() => ({
+            x: Math.random() * 100,
+            y: Math.random() * 100,
+            size: Math.random() * 4 + 2,
+            delay: Math.random() * 5
+        }));
+        setDots(newDots);
+    }, []);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -28,10 +40,39 @@ export default function Hero() {
             justifyContent: 'center',
             position: 'relative',
             paddingTop: '80px',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            backgroundColor: '#000000',
+            color: '#ffffff' /* Force dark mode specifically for the hero */
         }}>
-            {/* Background Aura */}
-            <div className="aura-bg" />
+            {/* Floating Dots */}
+            {dots.map((dot, i) => (
+                <motion.div
+                    key={i}
+                    animate={{
+                        y: [0, -30, 0],
+                        opacity: [0.2, 0.8, 0.2]
+                    }}
+                    transition={{
+                        duration: Math.random() * 3 + 4,
+                        repeat: Infinity,
+                        delay: dot.delay,
+                        ease: "easeInOut"
+                    }}
+                    style={{
+                        position: 'absolute',
+                        left: `${dot.x}%`,
+                        top: `${dot.y}%`,
+                        width: `${dot.size}px`,
+                        height: `${dot.size}px`,
+                        backgroundColor: '#ffffff',
+                        borderRadius: '50%',
+                        zIndex: 1
+                    }}
+                />
+            ))}
+
+            {/* Background Aura (Moved to Left) */}
+            <div className="aura-bg" style={{ left: '0%', transform: 'translate(-20%, -50%)', width: '80vw', height: '80vw' }} />
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', alignItems: 'center', width: '100%', maxWidth: '1200px', zIndex: 10 }}>
 
@@ -42,7 +83,8 @@ export default function Hero() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.2 }}
                         style={{
-                            fontSize: 'clamp(3rem, 6vw, 5rem)',
+                            fontSize: 'clamp(2rem, 4vw, 3.5rem)', /* Minimized headline */
+
                             fontWeight: 800,
                             lineHeight: 1.1,
                             letterSpacing: '-0.04em',

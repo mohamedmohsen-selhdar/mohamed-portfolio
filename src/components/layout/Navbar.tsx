@@ -2,11 +2,33 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Menu } from "lucide-react";
-import { useState } from "react";
+import { Menu, Sun, Moon } from "lucide-react";
+import { useState, useEffect } from "react";
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
+    const [isLightMode, setIsLightMode] = useState(false);
+
+    useEffect(() => {
+        // Check for saved theme
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            setIsLightMode(true);
+            document.documentElement.classList.add('light');
+        }
+    }, []);
+
+    const toggleTheme = () => {
+        if (isLightMode) {
+            document.documentElement.classList.remove('light');
+            localStorage.setItem('theme', 'dark');
+            setIsLightMode(false);
+        } else {
+            document.documentElement.classList.add('light');
+            localStorage.setItem('theme', 'light');
+            setIsLightMode(true);
+        }
+    };
 
     return (
         <motion.nav
@@ -36,9 +58,19 @@ export default function Navbar() {
                 Menu
             </button>
 
-            <Link href="/" style={{ fontSize: '1.25rem', fontWeight: 700, letterSpacing: '-0.02em' }}>
-                M.M.
-            </Link>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
+                <button
+                    onClick={toggleTheme}
+                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.5rem', borderRadius: '50%', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)' }}
+                    aria-label="Toggle Theme"
+                >
+                    {isLightMode ? <Moon size={20} /> : <Sun size={20} />}
+                </button>
+
+                <Link href="/" style={{ fontSize: '1.25rem', fontWeight: 800, letterSpacing: '-0.02em', background: 'var(--foreground)', color: 'var(--background)', padding: '0.2rem 0.6rem', borderRadius: '4px' }}>
+                    M.M.
+                </Link>
+            </div>
         </motion.nav>
     );
 }
