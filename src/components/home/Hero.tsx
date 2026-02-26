@@ -123,7 +123,7 @@ export default function Hero() {
                     style={{
                         position: 'relative',
                         width: '80%', /* Made slightly smaller */
-                        marginAll: '0 auto',
+                        margin: '0 auto',
                         aspectRatio: '3/4',
                         borderRadius: '2rem',
                         overflow: 'hidden',
