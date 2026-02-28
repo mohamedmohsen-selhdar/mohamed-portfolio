@@ -45,13 +45,14 @@ export default function Navbar() {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 zIndex: 50,
-                background: 'rgba(12, 12, 12, 0.7)',
+                background: isLightMode ? 'rgba(250, 250, 250, 0.8)' : 'rgba(5, 5, 5, 0.7)',
                 backdropFilter: 'blur(20px)',
-                borderBottom: '1px solid rgba(255, 255, 255, 0.05)'
+                borderBottom: '1px solid var(--card-border)',
+                color: 'var(--foreground)'
             }}
         >
             <button
-                style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '0.875rem', fontWeight: 500, letterSpacing: '0.05em', textTransform: 'uppercase' }}
+                style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '0.875rem', fontWeight: 500, letterSpacing: '0.05em', textTransform: 'uppercase', color: 'var(--foreground)' }}
                 onClick={() => setIsOpen(!isOpen)}
             >
                 <Menu size={20} />
@@ -61,7 +62,7 @@ export default function Navbar() {
             <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
                 <button
                     onClick={toggleTheme}
-                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.5rem', borderRadius: '50%', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)' }}
+                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.5rem', borderRadius: '50%', background: 'var(--card-bg)', border: '1px solid var(--card-border)', color: 'var(--foreground)' }}
                     aria-label="Toggle Theme"
                 >
                     {isLightMode ? <Moon size={20} /> : <Sun size={20} />}
