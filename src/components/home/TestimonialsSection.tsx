@@ -1,8 +1,8 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
-import { Star } from "lucide-react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface Testimonial {
     id: number;
@@ -37,90 +37,136 @@ const testimonials: Testimonial[] = [
 ];
 
 export default function TestimonialsSection() {
-    const containerRef = useRef<HTMLDivElement>(null);
-    const inView = useInView(containerRef, { once: true, margin: "-100px" });
+    const [activeIndex, setActiveIndex] = useState(0);
+    const [mounted, setMounted] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+        const checkMobile = () => setIsMobile(window.innerWidth < 768);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+
+        // Auto-advance
+        // const interval = setInterval(() => {
+        //     setActiveIndex((prev) => (prev + 1) % testimonials.length);
+        // }, 6000);
+        // return () => clearInterval(interval);
+    }, []);
+
+    const handleNext = () => setActiveIndex((prev) => (prev + 1) % testimonials.length);
+    const handlePrev = () => setActiveIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+
+    const activeQuote = testimonials[activeIndex];
 
     return (
-        <section className="section" style={{ position: 'relative', overflow: 'hidden' }}>
-            <div className="container" ref={containerRef}>
-                <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-                    <motion.h2
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                        transition={{ duration: 0.8 }}
-                        style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: 800, letterSpacing: '-0.02em', color: 'var(--foreground)' }}
+        <section className="section" style={{ position: 'relative', overflow: 'hidden', minHeight: '80vh', display: 'flex', alignItems: 'center', backgroundColor: 'var(--background)' }}>
+            <div className="container">
+
+                <div style={{ maxWidth: '900px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '4rem' }}>
+
+                    {/* Minimal Section Label */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}
                     >
-                        Client <span className="text-gradient">Impact</span>
-                    </motion.h2>
-                    <motion.p
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                        transition={{ duration: 0.8, delay: 0.2 }}
-                        className="text-muted"
-                        style={{ fontSize: '1.25rem', marginTop: '1rem', maxWidth: '600px', margin: '1rem auto 0 auto' }}
-                    >
-                        Don't just take my word for it. Here's what industry leaders have to say about our collaborations.
-                    </motion.p>
-                </div>
+                        <span style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>Testimonials</span>
+                        <div style={{ height: '1px', flex: 1, backgroundColor: 'var(--card-border)' }} />
+                    </motion.div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
-                    {testimonials.map((testimonial, index) => (
-                        <motion.div
-                            key={testimonial.id}
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-                            transition={{ duration: 0.6, delay: 0.2 + (index * 0.15) }}
-                            style={{
-                                background: 'var(--card-bg)',
-                                border: '1px solid var(--card-border)',
-                                borderRadius: '24px',
-                                padding: '3rem 2.5rem',
-                                position: 'relative',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                gap: '2rem',
-                                transition: 'transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease',
-                                cursor: 'default'
-                            }}
-                            onMouseEnter={(e) => {
-                                e.currentTarget.style.transform = 'translateY(-8px)';
-                                e.currentTarget.style.boxShadow = '0 20px 40px rgba(0,0,0,0.1), 0 0 20px var(--aura-color)';
-                                e.currentTarget.style.borderColor = 'var(--aura-intense)';
-                            }}
-                            onMouseLeave={(e) => {
-                                e.currentTarget.style.transform = 'translateY(0)';
-                                e.currentTarget.style.boxShadow = 'none';
-                                e.currentTarget.style.borderColor = 'var(--card-border)';
-                            }}
-                        >
-                            {/* Decorative Quote Mark */}
-                            <div style={{ position: 'absolute', top: '1.5rem', right: '2rem', fontSize: '6rem', color: 'var(--card-border)', lineHeight: 1, zIndex: 0, pointerEvents: 'none' }}>
-                                "
-                            </div>
+                    {/* Massive Typography Quote Container */}
+                    <div style={{ position: 'relative', minHeight: isMobile ? '350px' : '250px' }}>
 
-                            <div style={{ display: 'flex', gap: '4px', zIndex: 10 }}>
-                                {[...Array(5)].map((_, i) => (
-                                    <Star key={i} size={16} fill="var(--aura-intense)" color="var(--aura-intense)" />
-                                ))}
-                            </div>
+                        {/* Huge decorative quote mark fixed in background */}
+                        <span style={{ position: 'absolute', top: '-4rem', left: '-2rem', fontSize: '10rem', color: 'var(--card-bg)', lineHeight: 1, zIndex: 0, pointerEvents: 'none', fontFamily: 'serif' }}>"</span>
 
-                            <p style={{ fontSize: '1.125rem', lineHeight: 1.8, color: 'var(--foreground)', zIndex: 10, flexGrow: 1, fontStyle: 'italic' }}>
-                                "{testimonial.quote}"
-                            </p>
+                        <AnimatePresence mode="wait">
+                            {mounted && (
+                                <motion.div
+                                    key={activeQuote.id}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -20 }}
+                                    transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                                    style={{ position: 'relative', zIndex: 10 }}
+                                >
+                                    <h3 style={{
+                                        fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
+                                        fontWeight: 500,
+                                        lineHeight: 1.4,
+                                        letterSpacing: '-0.01em',
+                                        color: 'var(--foreground)'
+                                    }}>
+                                        {activeQuote.quote}
+                                    </h3>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </div>
 
-                            <div style={{ borderTop: '1px solid var(--card-border)', paddingTop: '1.5rem', zIndex: 10, display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                                <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--aura-intense), var(--aura-color))', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 800, fontSize: '1.25rem' }}>
-                                    {testimonial.author.charAt(testimonial.author.startsWith('Mr. ') ? 4 : 0)}
-                                </div>
-                                <div>
-                                    <h4 style={{ fontWeight: 700, fontSize: '1.125rem', color: 'var(--foreground)', letterSpacing: '-0.01em' }}>{testimonial.author}</h4>
-                                    <p className="text-muted" style={{ fontSize: '0.875rem', marginTop: '0.25rem', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>
-                                        {testimonial.role} <span style={{ color: 'var(--aura-intense)' }}>@</span> {testimonial.company}
-                                    </p>
-                                </div>
-                            </div>
-                        </motion.div>
-                    ))}
+                    {/* Credit Block & Navigation */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', borderTop: '1px solid var(--card-border)', paddingTop: '2rem' }}>
+
+                        {/* Author Info */}
+                        <div style={{ position: 'relative', overflow: 'hidden', height: '60px', flex: 1 }}>
+                            <AnimatePresence mode="wait">
+                                {mounted && (
+                                    <motion.div
+                                        key={activeQuote.id}
+                                        initial={{ opacity: 0, x: -20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        exit={{ opacity: 0, x: 20 }}
+                                        transition={{ duration: 0.4 }}
+                                        style={{ position: 'absolute', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}
+                                    >
+                                        <p style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--foreground)', letterSpacing: '-0.02em', textTransform: 'uppercase' }}>
+                                            {activeQuote.author}
+                                        </p>
+                                        <p className="text-muted" style={{ fontSize: '0.875rem', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+                                            {activeQuote.role} • {activeQuote.company}
+                                        </p>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
+
+                        {/* Navigation Controls */}
+                        <div style={{ display: 'flex', gap: '1rem' }}>
+                            <button
+                                onClick={handlePrev}
+                                style={{ width: '48px', height: '48px', borderRadius: '50%', border: '1px solid var(--card-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'transparent', transition: 'all 0.3s ease', cursor: 'pointer' }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.backgroundColor = 'var(--foreground)';
+                                    e.currentTarget.style.color = 'var(--background)';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.backgroundColor = 'transparent';
+                                    e.currentTarget.style.color = 'var(--foreground)';
+                                }}
+                            >
+                                <ChevronLeft size={20} />
+                            </button>
+                            <button
+                                onClick={handleNext}
+                                style={{ width: '48px', height: '48px', borderRadius: '50%', border: '1px solid var(--card-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'transparent', transition: 'all 0.3s ease', cursor: 'pointer' }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.backgroundColor = 'var(--foreground)';
+                                    e.currentTarget.style.color = 'var(--background)';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.backgroundColor = 'transparent';
+                                    e.currentTarget.style.color = 'var(--foreground)';
+                                }}
+                            >
+                                <ChevronRight size={20} />
+                            </button>
+                        </div>
+
+                    </div>
+
                 </div>
             </div>
         </section>
