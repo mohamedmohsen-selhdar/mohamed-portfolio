@@ -1,177 +1,174 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { services, ServiceData } from "@/data/content";
-import { X, ArrowRight } from "lucide-react";
+import { services } from "@/data/content";
+
+function useWindowWidth() {
+    const [width, setWidth] = useState(0);
+    useEffect(() => {
+        // Set initial width
+        setWidth(window.innerWidth);
+        const handleResize = () => setWidth(window.innerWidth);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+    return width;
+}
 
 export default function ServicesSection() {
-    const [selectedService, setSelectedService] = useState<ServiceData | null>(null);
+    const [activeIndex, setActiveIndex] = useState(0);
+    const [mounted, setMounted] = useState(false);
+    const windowWidth = useWindowWidth();
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    const activeService = services[activeIndex];
+
+    // Responsive configurations
+    const isMobile = mounted && windowWidth > 0 && windowWidth < 1024;
+
+    // For Desktop: A wide arc on the left side
+    // For Mobile: A tight vertical stack with a slight curve
+    const radius = isMobile ? 80 : 350;
+    const angleStep = isMobile ? 35 : 24;
+    const baseOffset = isMobile ? 20 : 100; // X-axis nudge to the right
 
     return (
-        <section className="section" style={{ position: 'relative', overflow: 'hidden' }}>
-            <div className="container" style={{ marginBottom: '4rem' }}>
-                <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: 800, letterSpacing: '-0.02em', marginBottom: '1rem' }}>
-                    Services
-                </h2>
-                <p className="text-muted" style={{ fontSize: '1.25rem', maxWidth: '600px' }}>
-                    Tap a card to flip and explore the methodology, deliverables, and impact.
-                </p>
-            </div>
+        <section className="section" style={{ position: 'relative', overflow: 'hidden', minHeight: '100vh', display: 'flex', alignItems: 'center', paddingTop: '80px', paddingBottom: '80px' }}>
+            <div className="container" style={{ position: 'relative', zIndex: 10, display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1.5fr', gap: isMobile ? '2rem' : '4rem', alignItems: 'center', minHeight: '80vh' }}>
 
-            {/* Horizontal Scroll Track */}
-            <div
-                style={{
-                    display: 'flex',
-                    gap: '2rem',
-                    overflowX: 'auto',
-                    padding: '0 2rem 4rem 2rem',
-                    scrollSnapType: 'x mandatory',
-                    scrollBehavior: 'smooth',
-                    WebkitOverflowScrolling: 'touch',
-                }}
-                className="hide-scrollbar"
-            >
-                {/* Add a spacer at the start to allow the first item to center if needed, or just let standard padding handle it */}
-                <div style={{ minWidth: '10vw', flexShrink: 0 }} />
-
-                {services.map((service, index) => (
-                    <motion.div
-                        key={service.id}
-                        layoutId={`card-container-${service.id}`}
-                        onClick={() => setSelectedService(service)}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        style={{
-                            minWidth: '350px',
-                            maxWidth: '400px',
-                            height: '450px',
-                            flexShrink: 0,
-                            scrollSnapAlign: 'center',
-                            cursor: 'pointer',
-                            borderRadius: '24px',
-                            background: 'var(--background)',
-                            border: '1px solid rgba(255, 255, 255, 0.1)',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'space-between',
-                            padding: '2.5rem',
-                            position: 'relative',
-                            overflow: 'hidden'
-                        }}
-                        className="aura-card"
-                    >
-                        {/* Number Indicator */}
-                        <div style={{ fontSize: '1.5rem', fontWeight: 800, opacity: 0.2, position: 'absolute', top: '2rem', right: '2rem' }}>
-                            0{index + 1}
-                        </div>
-
-                        <motion.h3 layoutId={`title-${service.id}`} style={{ fontSize: '2rem', fontWeight: 700, lineHeight: 1.2 }}>
-                            {service.title}
-                        </motion.h3>
-
-                        <div>
-                            <p className="text-muted" style={{ display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden', marginBottom: '1.5rem', lineHeight: 1.6 }}>
-                                {service.whatIDo}
-                            </p>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#ffffff', fontWeight: 600 }}>
-                                Explore <ArrowRight size={16} />
-                            </div>
-                        </div>
-                    </motion.div>
-                ))}
-
-                <div style={{ minWidth: '40vw', flexShrink: 0 }} />
-            </div>
-
-            {/* Expanded Modal */}
-            <AnimatePresence>
-                {selectedService && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        style={{
-                            position: 'fixed',
-                            inset: 0,
-                            zIndex: 1000,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            padding: '2rem',
-                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                            backdropFilter: 'blur(20px)'
-                        }}
-                    >
-                        <motion.div
-                            layoutId={`card-container-${selectedService.id}`}
-                            initial={{ rotateY: 90 }}
-                            animate={{ rotateY: 0 }}
-                            exit={{ rotateY: 90 }}
-                            transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-                            style={{
-                                width: '100%',
-                                maxWidth: '800px',
-                                maxHeight: '90vh',
-                                overflowY: 'auto',
-                                background: '#0a0a0a',
-                                color: '#ffffff',
-                                borderRadius: '24px',
-                                padding: '4rem',
-                                position: 'relative',
-                                border: '1px solid rgba(255, 255, 255, 0.1)',
-                                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
-                            }}
-                            className="hide-scrollbar"
-                        >
-                            <button
-                                onClick={() => setSelectedService(null)}
-                                style={{ position: 'absolute', top: '2rem', right: '2rem', padding: '0.5rem', background: 'rgba(255,255,255,0.1)', borderRadius: '50%', color: 'white' }}
-                                aria-label="Close"
-                            >
-                                <X size={24} />
-                            </button>
-
-                            <motion.h3 layoutId={`title-${selectedService.id}`} style={{ fontSize: '3rem', fontWeight: 800, marginBottom: '2rem', letterSpacing: '-0.02em' }}>
-                                {selectedService.title}
-                            </motion.h3>
-
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
-                                <div>
-                                    <h4 style={{ fontSize: '1.25rem', color: '#ffffff', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem', fontWeight: 700 }}>What I Do</h4>
-                                    <p style={{ fontSize: '1.125rem', lineHeight: 1.8, color: 'rgba(255,255,255,0.8)' }}>{selectedService.whatIDo}</p>
-                                </div>
-
-                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem' }}>
-                                    <div>
-                                        <h4 style={{ fontSize: '1.1rem', color: '#ffffff', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem', fontWeight: 700 }}>Deliverables</h4>
-                                        <ul style={{ listStylePosition: 'inside', color: 'rgba(255,255,255,0.8)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                                            {selectedService.deliverables.map((item, i) => <li key={i}>{item}</li>)}
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <h4 style={{ fontSize: '1.1rem', color: '#ffffff', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem', fontWeight: 700 }}>Expected Impact</h4>
-                                        <ul style={{ listStylePosition: 'inside', color: 'rgba(255,255,255,0.8)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                                            {selectedService.expectedImpact.map((item, i) => <li key={i}>{item}</li>)}
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <div style={{ padding: '2rem', background: 'rgba(255,255,255,0.03)', borderRadius: '16px', border: '1px dashed rgba(255,255,255,0.1)' }}>
-                                    <h4 style={{ fontSize: '0.875rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.5rem', fontWeight: 700 }}>Track Record</h4>
-                                    <p style={{ fontSize: '1.25rem', fontWeight: 600 }}>{selectedService.projectsDelivered}</p>
-                                </div>
-                            </div>
-                        </motion.div>
-                    </motion.div>
+                {/* Title (Mobile Only - usually we integrate it, but let's keep it visible) */}
+                {isMobile && (
+                    <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+                        <h2 style={{ fontSize: '2.5rem', fontWeight: 800, letterSpacing: '-0.02em' }}>Services</h2>
+                    </div>
                 )}
-            </AnimatePresence>
 
-            <style dangerouslySetInnerHTML={{
-                __html: `
-                .hide-scrollbar::-webkit-scrollbar { display: none; }
-                .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-            `}} />
+                {/* Left Side: Radial Menu */}
+                <div style={{ position: 'relative', width: '100%', height: isMobile ? '300px' : '600px', display: 'flex', alignItems: 'center', justifyContent: isMobile ? 'center' : 'flex-start' }}>
+
+                    {!isMobile && (
+                        <div style={{ position: 'absolute', left: '-20%', top: '50%', transform: 'translateY(-50%)', width: '200px', height: '600px', background: 'radial-gradient(ellipse at left, rgba(255,255,255,0.05) 0%, transparent 70%)', filter: 'blur(40px)', zIndex: 0 }} />
+                    )}
+
+                    {/* Menu Pivot Container */}
+                    <div style={{ position: 'absolute', left: isMobile ? '10%' : '0%', top: '50%', transform: 'translateY(-50%)', zIndex: 10 }}>
+                        {mounted && services.map((service, index) => {
+                            const theta = (index - activeIndex) * angleStep;
+                            const thetaRad = (theta * Math.PI) / 180;
+
+                            // Wheel math
+                            const x = Math.cos(thetaRad) * radius - radius + baseOffset;
+                            const y = Math.sin(thetaRad) * radius;
+
+                            const isActive = index === activeIndex;
+                            // Hide items that circle too far out of view
+                            const distance = Math.abs(index - activeIndex);
+                            const isVisible = isMobile ? distance <= 1 : distance <= 3;
+
+                            return (
+                                <motion.button
+                                    key={service.id}
+                                    onClick={() => setActiveIndex(index)}
+                                    animate={{
+                                        x,
+                                        y,
+                                        scale: isActive ? 1.1 : 0.9,
+                                        opacity: isVisible ? (isActive ? 1 : 0.4) : 0,
+                                        pointerEvents: isVisible ? 'auto' : 'none'
+                                    }}
+                                    transition={{ type: "spring", stiffness: 260, damping: 25 }}
+                                    style={{
+                                        position: 'absolute',
+                                        left: 0,
+                                        top: 0,
+                                        marginTop: '-24px', // Half height
+                                        padding: '0.75rem 1.5rem',
+                                        background: isActive ? '#ffffff' : 'rgba(255,255,255,0.02)',
+                                        color: isActive ? '#000000' : '#ffffff',
+                                        border: isActive ? 'none' : '1px solid rgba(255,255,255,0.1)',
+                                        borderRadius: '9999px',
+                                        fontWeight: 700,
+                                        fontSize: isMobile ? '0.875rem' : '1.125rem',
+                                        cursor: 'pointer',
+                                        zIndex: isActive ? 20 : 10 - distance,
+                                        whiteSpace: 'nowrap',
+                                        boxShadow: isActive ? '0 10px 25px -5px rgba(255, 255, 255, 0.2)' : 'none',
+                                        transformOrigin: 'left center'
+                                    }}
+                                >
+                                    {service.title}
+                                </motion.button>
+                            );
+                        })}
+                    </div>
+                </div>
+
+                {/* Right Side: Animated Content Screen */}
+                <div style={{ position: 'relative', height: '100%', display: 'flex', alignItems: 'center' }}>
+                    <AnimatePresence mode="wait">
+                        {mounted && (
+                            <motion.div
+                                key={activeService.id}
+                                initial={{ opacity: 0, x: 20, filter: 'blur(10px)' }}
+                                animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+                                exit={{ opacity: 0, x: -20, filter: 'blur(10px)' }}
+                                transition={{ duration: 0.4 }}
+                                style={{
+                                    background: 'rgba(255, 255, 255, 0.02)',
+                                    border: '1px solid rgba(255, 255, 255, 0.05)',
+                                    borderRadius: '24px',
+                                    padding: isMobile ? '2rem' : '4rem',
+                                    width: '100%',
+                                    position: 'relative',
+                                    overflow: 'hidden'
+                                }}
+                            >
+                                {/* Subtle glowing gradient matching active service */}
+                                <div style={{ position: 'absolute', top: 0, right: 0, width: '300px', height: '300px', background: 'radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%)', filter: 'blur(40px)', zIndex: 0 }} />
+
+                                <div style={{ position: 'relative', zIndex: 10 }}>
+                                    <h3 style={{ fontSize: isMobile ? '2rem' : '3rem', fontWeight: 800, marginBottom: '2rem', letterSpacing: '-0.02em', color: '#ffffff' }}>
+                                        {activeService.title}
+                                    </h3>
+
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
+                                        <div>
+                                            <h4 style={{ fontSize: '0.875rem', color: '#ffffff', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem', fontWeight: 700 }}>What I Do</h4>
+                                            <p style={{ fontSize: '1.125rem', lineHeight: 1.8, color: 'rgba(255,255,255,0.8)' }}>
+                                                {activeService.whatIDo}
+                                            </p>
+                                        </div>
+
+                                        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '2rem' }}>
+                                            <div>
+                                                <h4 style={{ fontSize: '0.875rem', color: '#ffffff', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem', fontWeight: 700 }}>Deliverables</h4>
+                                                <ul style={{ listStylePosition: 'outside', marginLeft: '1rem', color: 'rgba(255,255,255,0.7)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                                    {activeService.deliverables.map((item, i) => <li key={i}>{item}</li>)}
+                                                </ul>
+                                            </div>
+                                            <div>
+                                                <h4 style={{ fontSize: '0.875rem', color: '#ffffff', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem', fontWeight: 700 }}>Expected Impact</h4>
+                                                <ul style={{ listStylePosition: 'outside', marginLeft: '1rem', color: 'rgba(255,255,255,0.7)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                                    {activeService.expectedImpact.map((item, i) => <li key={i}>{item}</li>)}
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <div style={{ marginTop: '1rem', paddingTop: '2rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                                            <h4 style={{ fontSize: '0.875rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.5rem', fontWeight: 700 }}>Track Record</h4>
+                                            <p style={{ fontSize: '1.25rem', fontWeight: 600, color: '#ffffff' }}>{activeService.projectsDelivered}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </div>
+            </div>
         </section>
     );
 }
