@@ -60,14 +60,6 @@ export default function Navbar() {
             </button>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
-                <button
-                    onClick={toggleTheme}
-                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.5rem', borderRadius: '50%', background: 'var(--card-bg)', border: '1px solid var(--card-border)', color: 'var(--foreground)' }}
-                    aria-label="Toggle Theme"
-                >
-                    {isLightMode ? <Moon size={20} /> : <Sun size={20} />}
-                </button>
-
                 <Link href="/" style={{ fontSize: '1.25rem', fontWeight: 800, letterSpacing: '-0.02em', background: 'var(--foreground)', color: 'var(--background)', padding: '0.2rem 0.6rem', borderRadius: '4px' }}>
                     M.M.
                 </Link>

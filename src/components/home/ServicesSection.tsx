@@ -117,6 +117,11 @@ export default function ServicesSection() {
                                                 </div>
                                             ))}
                                         </div>
+
+                                        <div style={{ marginTop: '3rem', paddingTop: '1.5rem', borderTop: '1px solid var(--card-border)' }}>
+                                            <p style={{ fontSize: '0.875rem', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Track Record</p>
+                                            <p style={{ fontSize: '1.125rem', fontWeight: 500, color: 'var(--foreground)' }}>{activeService.projectsDelivered}</p>
+                                        </div>
                                     </div>
                                 </motion.div>
                             )}

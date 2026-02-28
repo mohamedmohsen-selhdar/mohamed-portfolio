@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
-import Image from "next/image";
+import { Sun, Moon } from "lucide-react";
 
 const roles = [
     "business consultant.",
@@ -25,10 +25,32 @@ export default function Hero() {
         setDots(newDots);
     }, []);
 
+    const [isLightMode, setIsLightMode] = useState(false);
+
+    useEffect(() => {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            setIsLightMode(true);
+            document.documentElement.classList.add('light');
+        }
+    }, []);
+
+    const toggleTheme = () => {
+        if (isLightMode) {
+            document.documentElement.classList.remove('light');
+            localStorage.setItem('theme', 'dark');
+            setIsLightMode(false);
+        } else {
+            document.documentElement.classList.add('light');
+            localStorage.setItem('theme', 'light');
+            setIsLightMode(true);
+        }
+    };
+
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentRoleIndex((prev) => (prev + 1) % roles.length);
-        }, 3000);
+        }, 6000);
         return () => clearInterval(interval);
     }, []);
 
@@ -72,6 +94,38 @@ export default function Hero() {
                 />
             ))}
 
+            {/* Glowing Floating Theme Toggle */}
+            <motion.button
+                onClick={toggleTheme}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 0.5 }}
+                style={{
+                    position: 'absolute',
+                    top: '100px',
+                    right: '5%',
+                    zIndex: 50,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: '0.75rem',
+                    borderRadius: '50%',
+                    background: 'var(--card-bg)',
+                    border: '1px solid var(--card-border)',
+                    color: 'var(--foreground)',
+                    cursor: 'pointer',
+                    boxShadow: isLightMode
+                        ? '0 0 15px rgba(250, 200, 0, 0.5), 0 0 30px rgba(250, 200, 0, 0.2)'
+                        : '0 0 15px rgba(0, 150, 255, 0.3), 0 0 30px rgba(0, 150, 255, 0.1)',
+                    transition: 'box-shadow 0.3s ease'
+                }}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                aria-label="Toggle Theme"
+            >
+                {isLightMode ? <Moon size={24} /> : <Sun size={24} />}
+            </motion.button>
+
             {/* Background Aura (Moved to Left) */}
             <div className="aura-bg" style={{ left: '0%', transform: 'translate(-20%, -50%)', width: '80vw', height: '80vw' }} />
 
@@ -103,7 +157,7 @@ export default function Hero() {
                                     key={currentRoleIndex}
                                     initial={{ y: 50, opacity: 0 }}
                                     animate={{ y: 0, opacity: 1 }}
-                                    exit={{ y: -50, opacity: 0 }}
+                                    exit={{ y: 50, opacity: 0 }}
                                     transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                                     className="text-gradient"
                                     style={{ position: 'absolute', whiteSpace: 'nowrap' }}
