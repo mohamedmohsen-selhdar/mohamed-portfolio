@@ -1,11 +1,36 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useInView, useSpring, useTransform } from "framer-motion";
+import { useEffect, useRef } from "react";
 
 const clients = [
     "RICHIE", "Egypt Gold", "Contistahl", "EIPAL",
     "Harmony", "MITCO", "TRONIX", "GIZ"
 ];
+
+function AnimatedCounter({ value, label, prefix = "" }: { value: number; label: string; prefix?: string }) {
+    const ref = useRef<HTMLDivElement>(null);
+    const inView = useInView(ref, { once: true, margin: "-100px" });
+    const motionValue = useSpring(0, { stiffness: 50, damping: 20 });
+
+    useEffect(() => {
+        if (inView) {
+            motionValue.set(value);
+        }
+    }, [inView, value, motionValue]);
+
+    const displayValue = useTransform(motionValue, (latest) => Math.round(latest));
+
+    return (
+        <div ref={ref}>
+            <h3 style={{ fontSize: '3.5rem', fontWeight: 800, color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                {prefix}
+                <motion.span>{displayValue}</motion.span>
+            </h3>
+            <p className="text-muted" style={{ fontSize: '1.25rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{label}</p>
+        </div>
+    );
+}
 
 export default function ClientsMarquee() {
     return (
@@ -14,35 +39,9 @@ export default function ClientsMarquee() {
 
                 {/* Success Stats */}
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '2rem', textAlign: 'center', marginBottom: '4rem' }}>
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
-                    >
-                        <h3 style={{ fontSize: '3.5rem', fontWeight: 800, color: 'white' }}>+70</h3>
-                        <p className="text-muted" style={{ fontSize: '1.25rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Clients</p>
-                    </motion.div>
-
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: 0.1 }}
-                    >
-                        <h3 style={{ fontSize: '3.5rem', fontWeight: 800, color: 'white' }}>197</h3>
-                        <p className="text-muted" style={{ fontSize: '1.25rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Implemented Projects</p>
-                    </motion.div>
-
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                    >
-                        <h3 style={{ fontSize: '3.5rem', fontWeight: 800, color: 'white' }}>23</h3>
-                        <p className="text-muted" style={{ fontSize: '1.25rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Different Industry</p>
-                    </motion.div>
+                    <AnimatedCounter value={70} label="Clients" prefix="+" />
+                    <AnimatedCounter value={197} label="Implemented Projects" />
+                    <AnimatedCounter value={23} label="Different Industry" />
                 </div>
             </div>
 

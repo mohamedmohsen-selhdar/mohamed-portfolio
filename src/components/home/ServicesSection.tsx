@@ -37,15 +37,16 @@ export default function ServicesSection() {
     const baseOffset = isMobile ? 20 : 100; // X-axis nudge to the right
 
     return (
-        <section className="section" style={{ position: 'relative', overflow: 'hidden', minHeight: '100vh', display: 'flex', alignItems: 'center', paddingTop: '80px', paddingBottom: '80px' }}>
-            <div className="container" style={{ position: 'relative', zIndex: 10, display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1.5fr', gap: isMobile ? '2rem' : '4rem', alignItems: 'center', minHeight: '80vh' }}>
+        <section className="section" style={{ position: 'relative', overflow: 'hidden', minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingTop: '80px', paddingBottom: '80px' }}>
 
-                {/* Title (Mobile Only - usually we integrate it, but let's keep it visible) */}
-                {isMobile && (
-                    <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                        <h2 style={{ fontSize: '2.5rem', fontWeight: 800, letterSpacing: '-0.02em' }}>Services</h2>
-                    </div>
-                )}
+            {/* Title (Always Visible) */}
+            <div className="container" style={{ marginBottom: isMobile ? '2rem' : '4rem', zIndex: 10, position: 'relative', textAlign: isMobile ? 'center' : 'left' }}>
+                <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: 800, letterSpacing: '-0.02em', color: '#ffffff' }}>
+                    Services
+                </h2>
+            </div>
+
+            <div className="container" style={{ position: 'relative', zIndex: 10, display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1.5fr', gap: isMobile ? '2rem' : '4rem', alignItems: 'center', minHeight: '80vh' }}>
 
                 {/* Left Side: Radial Menu */}
                 <div style={{ position: 'relative', width: '100%', height: isMobile ? '300px' : '600px', display: 'flex', alignItems: 'center', justifyContent: isMobile ? 'center' : 'flex-start' }}>
