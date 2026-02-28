@@ -105,3 +105,32 @@ button {
   font-weight: 500;
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
+
+/* Calendly Glowing Badge Animations */
+@keyframes calendlyGlow {
+  0% {
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.4), 0 0 20px rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+
+  50% {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.6);
+    border-color: rgba(255, 255, 255, 1);
+  }
+
+  100% {
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.4), 0 0 20px rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+}
+
+.calendly-badge-widget .calendly-badge-content {
+  animation: calendlyGlow 2.5s infinite alternate !important;
+  transition: all 0.3s ease !important;
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+}
+
+.calendly-badge-widget .calendly-badge-content:hover {
+  transform: scale(1.05) !important;
+  animation-duration: 1.5s !important;
+}
