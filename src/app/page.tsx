@@ -12,10 +12,10 @@ export default function Home() {
       <div style={{ flex: 1 }}>
         <Hero />
         <ClientsMarquee />
-        <ManifestoSection />
         <ServicesSection />
         <CaseStudiesSection />
         <TestimonialsSection />
+        <ManifestoSection />
       </div>
       <Footer />
     </main>

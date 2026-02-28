@@ -51,7 +51,7 @@ export default function Hero() {
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentRoleIndex((prev) => (prev + 1) % roles.length);
-        }, 6000);
+        }, 3000);
         return () => clearInterval(interval);
     }, []);
 
@@ -103,8 +103,8 @@ export default function Hero() {
                 transition={{ duration: 0.5, delay: 0.5 }}
                 style={{
                     position: 'absolute',
-                    top: '100px',
-                    right: '5%',
+                    top: '40px',
+                    right: '3%',
                     zIndex: 50,
                     display: 'flex',
                     alignItems: 'center',
@@ -159,7 +159,7 @@ export default function Hero() {
                                     initial={{ y: 50, opacity: 0 }}
                                     animate={{ y: 0, opacity: 1 }}
                                     exit={{ y: 50, opacity: 0 }}
-                                    transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                                    transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
                                     className="text-gradient"
                                     style={{ position: 'absolute', whiteSpace: 'nowrap' }}
                                 >

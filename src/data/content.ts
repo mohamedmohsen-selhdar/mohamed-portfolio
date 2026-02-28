@@ -7,6 +7,7 @@ export interface ServiceData {
     deliverables: string[];
     expectedImpact: string[];
     projectsDelivered: string;
+    projectNames: string[];
 }
 
 export interface CaseStudyData {
@@ -40,7 +41,8 @@ export const services: ServiceData[] = [
             "Higher productivity per employee",
             "Better coordination between sales, operations, and finance"
         ],
-        "projectsDelivered": "35+ projects across furniture, plastics, chemicals, engineering, food, and metal industries."
+        "projectsDelivered": "35+ projects across furniture, plastics, chemicals, engineering, food, and metal industries.",
+        "projectNames": ["RICHIE Furniture Restructuring", "GP Plast Process Optimization", "in&In Workflow Redesign"]
     },
     {
         "id": "supply-chain-excellence",
@@ -61,7 +63,8 @@ export const services: ServiceData[] = [
             "Improved cash flow",
             "Controlled production variability"
         ],
-        "projectsDelivered": "25+ supply chain transformation projects, including supplier integration projects supported by international development entities."
+        "projectsDelivered": "25+ supply chain transformation projects, including supplier integration projects supported by international development entities.",
+        "projectNames": ["USAID-Supported Supplier Integration", "Mid-Level Manufacturer Supply Overhaul", "Plastics Component Sourcing Strategy"]
     },
     {
         "id": "organizational-design-development",
@@ -81,7 +84,8 @@ export const services: ServiceData[] = [
             "Reduced dependency on owner",
             "Scalable growth model"
         ],
-        "projectsDelivered": "30+ restructuring and org design projects for SMEs and medium-sized factories (30–200 employees)."
+        "projectsDelivered": "30+ restructuring and org design projects for SMEs and medium-sized factories (30–200 employees).",
+        "projectNames": ["Factory-Wide Hierarchical Redesign", "Executive Delegation Matrix Implementation", "Founder-Dependency Reduction Program"]
     },
     {
         "id": "data-driven-decision-making-dddm",
@@ -100,7 +104,8 @@ export const services: ServiceData[] = [
             "Reduced hidden losses",
             "Clear performance tracking across departments"
         ],
-        "projectsDelivered": "40+ dashboarding and KPI system implementations."
+        "projectsDelivered": "40+ dashboarding and KPI system implementations.",
+        "projectNames": ["Enterprise Data Architecture Design", "Real-Time Profitability Dashboard Suite", "Executive KPI Tracking System"]
     },
     {
         "id": "business-digitization",
@@ -119,7 +124,8 @@ export const services: ServiceData[] = [
             "Improved traceability",
             "Increased operational transparency"
         ],
-        "projectsDelivered": "20+ digitization and automation projects."
+        "projectsDelivered": "20+ digitization and automation projects.",
+        "projectNames": ["Process-Based ERP Logic Design", "End-to-End Automation Blueprint", "Manual Workflow Digitization Rollout"]
     },
     {
         "id": "product-costing-pricing-structure",
@@ -138,7 +144,8 @@ export const services: ServiceData[] = [
             "Margin improvement (typically 8–20%)",
             "Stronger pricing negotiations"
         ],
-        "projectsDelivered": "50+ costing and pricing restructuring projects across manufacturing sectors."
+        "projectsDelivered": "50+ costing and pricing restructuring projects across manufacturing sectors.",
+        "projectNames": ["Activity-Based Costing Overhaul", "Product Line Margin Visibility System", "Factory Overhead Allocation Matrix"]
     },
     {
         "id": "cost-reduction-projects",
@@ -157,7 +164,8 @@ export const services: ServiceData[] = [
             "Stronger cash position",
             "Sustainable efficiency gains"
         ],
-        "projectsDelivered": "30+ cost optimization initiatives, including projects that transformed loss-making operations into double-digit profitability."
+        "projectsDelivered": "30+ cost optimization initiatives, including projects that transformed loss-making operations into double-digit profitability.",
+        "projectNames": ["Manufacturing Plant Waste Reduction", "Procurement Spend Optimization Strategy", "Capacity Utilization Turnaround"]
     }
 ];
 

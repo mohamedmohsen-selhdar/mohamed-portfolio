@@ -32,12 +32,12 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
         <div style={{ backgroundColor: '#050505', minHeight: '100vh', width: '100%', overflow: 'hidden', position: 'relative', perspective: '1500px' }}>
 
             {/* Background Image Layer */}
-            <div style={{ position: 'absolute', inset: 0, zIndex: 0, opacity: isMenuOpen ? 0.4 : 0, transition: 'opacity 0.6s ease', paddingLeft: isMobile ? 0 : '10vw' }}>
+            <div style={{ position: 'absolute', inset: 0, zIndex: 0, opacity: isMenuOpen ? 0.4 : 0, transition: 'opacity 0.6s ease' }}>
                 <Image
                     src="/menu-bg.jpg"
                     alt="Precision Robotic Arm Background"
                     fill
-                    style={{ objectFit: 'contain', objectPosition: isMobile ? 'center' : 'right center', filter: 'grayscale(100%) contrast(1.2)' }}
+                    style={{ objectFit: 'cover', objectPosition: isMobile ? 'center' : 'right center', filter: 'grayscale(100%) contrast(1.2)' }}
                     priority
                 />
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(5,5,5,1) 0%, rgba(5,5,5,0.7) 40%, transparent 100%)' }} />

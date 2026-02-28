@@ -4,8 +4,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 
 const manifestoLines = [
-    { text: "We don't build slide decks.", highlight: "" },
-    { text: "We build machines.", highlight: "machines" },
+    { text: "I don't just advise.", highlight: "advise" },
+    { text: "I embed and execute.", highlight: "execute" },
     { text: "Execution over theory.", highlight: "Execution" },
     { text: "Profit over vanity metrics.", highlight: "Profit" }
 ];
@@ -81,15 +81,44 @@ export default function ManifestoSection() {
             overflow: 'hidden'
         }}>
 
-            {/* Subtle grid/grain background overlay */}
+            {/* Dynamic Animated Waves Background */}
             <div style={{
                 position: 'absolute',
                 inset: 0,
-                backgroundImage: 'radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px)',
-                backgroundSize: '40px 40px',
-                opacity: 0.2,
-                pointerEvents: 'none'
+                opacity: 0.15,
+                pointerEvents: 'none',
+                background: `
+                    radial-gradient(circle at 50% 150%, var(--aura-intense) 0%, transparent 50%),
+                    radial-gradient(circle at 0% 0%, var(--aura-color) 0%, transparent 30%)
+                `,
+                filter: 'blur(30px)'
             }} />
+
+            {/* CSS Wave SVG overlay */}
+            <div style={{
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                width: '100%',
+                overflow: 'hidden',
+                lineHeight: 0,
+                opacity: 0.1
+            }}>
+                <svg viewBox="0 0 1200 120" preserveAspectRatio="none" style={{ position: 'relative', display: 'block', width: 'calc(100% + 1.3px)', height: '150px' }}>
+                    <motion.path
+                        d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C56.71,118.92,137.38,131.52,216.7,118.89,252.17,113.25,287.41,105.5,321.39,56.44Z"
+                        style={{ fill: 'white' }}
+                        animate={{
+                            d: [
+                                "M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C56.71,118.92,137.38,131.52,216.7,118.89,252.17,113.25,287.41,105.5,321.39,56.44Z",
+                                "M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V0C56.71,23.12,137.38,35.72,216.7,23.1,252.17,17.45,287.41,9.7,321.39-39.36Z",
+                                "M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C56.71,118.92,137.38,131.52,216.7,118.89,252.17,113.25,287.41,105.5,321.39,56.44Z"
+                            ]
+                        }}
+                        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+                    />
+                </svg>
+            </div>
 
             <div style={{ maxWidth: '1000px', width: '100%', position: 'relative', zIndex: 10 }}>
 
@@ -105,8 +134,7 @@ export default function ManifestoSection() {
                         fontSize: 'clamp(2.5rem, 6vw, 5rem)',
                         fontWeight: 800,
                         lineHeight: 1.1,
-                        letterSpacing: '-0.02em',
-                        fontFamily: 'monospace' // Enforce terminal feel
+                        letterSpacing: '-0.02em'
                     }}>
                         {renderStyledText(displayedText, manifestoLines[currentLineIndex].highlight)}
                         {/* Blinking Cursor */}

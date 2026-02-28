@@ -120,7 +120,16 @@ export default function ServicesSection() {
 
                                         <div style={{ marginTop: '3rem', paddingTop: '1.5rem', borderTop: '1px solid var(--card-border)' }}>
                                             <p style={{ fontSize: '0.875rem', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Track Record</p>
-                                            <p style={{ fontSize: '1.125rem', fontWeight: 500, color: 'var(--foreground)' }}>{activeService.projectsDelivered}</p>
+                                            <p style={{ fontSize: '1.125rem', fontWeight: 500, color: 'var(--foreground)', marginBottom: '1.5rem' }}>{activeService.projectsDelivered}</p>
+
+                                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                                <p style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>Key Projects</p>
+                                                {activeService.projectNames?.map((project, idx) => (
+                                                    <span key={idx} style={{ fontSize: '1rem', color: 'var(--foreground)', fontWeight: 600, paddingBottom: '0.25rem', borderBottom: '1px solid var(--border-subtle)' }}>
+                                                        {project}
+                                                    </span>
+                                                ))}
+                                            </div>
                                         </div>
                                     </div>
                                 </motion.div>
