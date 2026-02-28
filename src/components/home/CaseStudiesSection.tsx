@@ -58,7 +58,7 @@ export default function CaseStudiesSection() {
                                 width: activeIndex === i ? '24px' : '8px',
                                 height: '8px',
                                 borderRadius: '4px',
-                                background: activeIndex === i ? '#fff' : 'rgba(255,255,255,0.2)',
+                                background: activeIndex === i ? 'var(--foreground)' : 'var(--card-border)',
                                 transition: 'all 0.3s ease'
                             }}
                         />
@@ -68,19 +68,19 @@ export default function CaseStudiesSection() {
                 {/* Navigation Arrows */}
                 <button
                     onClick={prevCard}
-                    style={{ position: 'absolute', left: isMobile ? '0' : '-4rem', top: '50%', transform: 'translateY(-50%)', zIndex: 30, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '50%', width: isMobile ? '40px' : '56px', height: isMobile ? '40px' : '56px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'white', backdropFilter: 'blur(10px)' }}
+                    style={{ position: 'absolute', left: isMobile ? '0' : '-4rem', top: '50%', transform: 'translateY(-50%)', zIndex: 30, background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '50%', width: isMobile ? '40px' : '56px', height: isMobile ? '40px' : '56px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--foreground)', backdropFilter: 'blur(10px)' }}
                 >
                     <ChevronLeft size={isMobile ? 20 : 28} />
                 </button>
                 <button
                     onClick={nextCard}
-                    style={{ position: 'absolute', right: isMobile ? '0' : '-4rem', top: '50%', transform: 'translateY(-50%)', zIndex: 30, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '50%', width: isMobile ? '40px' : '56px', height: isMobile ? '40px' : '56px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'white', backdropFilter: 'blur(10px)' }}
+                    style={{ position: 'absolute', right: isMobile ? '0' : '-4rem', top: '50%', transform: 'translateY(-50%)', zIndex: 30, background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '50%', width: isMobile ? '40px' : '56px', height: isMobile ? '40px' : '56px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--foreground)', backdropFilter: 'blur(10px)' }}
                 >
                     <ChevronRight size={isMobile ? 20 : 28} />
                 </button>
 
                 {/* Flip Card Container */}
-                <div style={{ position: 'relative', width: '100%', minHeight: isMobile ? '800px' : '500px' }}>
+                <div style={{ position: 'relative', width: '100%', minHeight: isMobile ? '950px' : '500px' }}>
                     <AnimatePresence mode="wait">
                         {mounted && (
                             <motion.div
@@ -94,16 +94,16 @@ export default function CaseStudiesSection() {
                                     position: 'absolute',
                                     top: 0,
                                     left: 0,
-                                    background: 'rgba(255,255,255,0.02)',
-                                    border: '1px solid rgba(255,255,255,0.08)',
+                                    background: 'var(--card-bg)',
+                                    border: '1px solid var(--card-border)',
                                     borderRadius: '24px',
                                     padding: isMobile ? '2.5rem 1.5rem' : '4rem 5rem',
                                     backfaceVisibility: 'hidden',
-                                    boxShadow: '0 30px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1)',
+                                    boxShadow: '0 30px 60px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.1)',
                                 }}
                             >
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: '2rem', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '2rem' }}>
-                                    <span style={{ fontSize: '3rem', color: 'rgba(255,255,255,0.1)', fontWeight: 900, letterSpacing: '-0.05em' }}>0{activeIndex + 1}</span>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: '2rem', borderBottom: '1px solid var(--card-border)', paddingBottom: '2rem' }}>
+                                    <span style={{ fontSize: '3rem', color: 'var(--text-muted)', opacity: 0.5, fontWeight: 900, letterSpacing: '-0.05em', fontFamily: 'var(--font-playfair)' }}>0{activeIndex + 1}</span>
                                     <div>
                                         <h3 style={{ fontSize: isMobile ? '1.5rem' : '2.25rem', fontWeight: 800, lineHeight: 1.2 }}>{study.title}</h3>
                                         <p style={{ color: 'var(--aura-intense)', fontWeight: 700, marginTop: '0.5rem', letterSpacing: '0.1em', textTransform: 'uppercase', fontSize: '0.875rem' }}>{study.company}</p>
@@ -112,22 +112,22 @@ export default function CaseStudiesSection() {
 
                                 <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? '3rem' : '4rem' }}>
                                     <div>
-                                        <h4 style={{ textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.875rem', color: '#ffffff', marginBottom: '1.25rem', fontWeight: 700 }}>Core Problem</h4>
-                                        <p className="text-muted" style={{ marginBottom: '1.5rem', fontStyle: 'italic', borderLeft: '2px solid rgba(255,255,255,0.2)', paddingLeft: '1.5rem', lineHeight: 1.7 }}>"{study.context}"</p>
+                                        <h4 style={{ textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.875rem', color: 'var(--foreground)', marginBottom: '1.25rem', fontWeight: 700 }}>Core Problem</h4>
+                                        <p className="text-muted" style={{ marginBottom: '1.5rem', fontStyle: 'italic', borderLeft: '2px solid var(--card-border)', paddingLeft: '1.5rem', lineHeight: 1.7 }}>"{study.context}"</p>
                                         <ul style={{ color: 'var(--text-muted)', listStylePosition: 'outside', marginLeft: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem', lineHeight: 1.6 }}>
                                             {study.coreProblem.map((item, i) => <li key={i}>{item}</li>)}
                                         </ul>
                                     </div>
 
                                     <div>
-                                        <h4 style={{ textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.875rem', color: '#ffffff', marginBottom: '1.25rem', fontWeight: 700 }}>Measurable Impact</h4>
-                                        <div style={{ background: 'rgba(255,255,255,0.03)', padding: '1.25rem', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)', marginBottom: '1.5rem' }}>
+                                        <h4 style={{ textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.875rem', color: 'var(--foreground)', marginBottom: '1.25rem', fontWeight: 700 }}>Measurable Impact</h4>
+                                        <div style={{ background: 'var(--card-bg)', padding: '1.25rem', borderRadius: '16px', border: '1px solid var(--card-border)', marginBottom: '1.5rem' }}>
                                             <p style={{ fontWeight: 700, fontSize: '0.75rem', letterSpacing: '0.1em', color: 'var(--text-muted)' }}>INTERVENTION</p>
                                             <p style={{ fontSize: '1.125rem', marginTop: '0.5rem', fontWeight: 500 }}>{study.intervention}</p>
                                         </div>
                                         <ul style={{ listStylePosition: 'outside', marginLeft: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem', lineHeight: 1.6 }}>
                                             {study.measurableImpact.map((item, i) => (
-                                                <li key={i} style={{ color: '#ffffff' }}>{item}</li>
+                                                <li key={i} style={{ color: 'var(--foreground)' }}>{item}</li>
                                             ))}
                                         </ul>
                                     </div>

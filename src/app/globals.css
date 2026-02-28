@@ -1,14 +1,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap');
 
 :root {
-  --background: #0c0c0c;
+  --background: #050505;
   --foreground: #ffffff;
   --text-muted: #a0a0a0;
 
-  --aura-color: rgba(99, 102, 241, 0.4);
-  /* Indigo/violet glow */
-  --aura-intense: rgba(139, 92, 246, 0.6);
-  /* Purple glow */
+  /* Premium Gold/Amber glow instead of pale blue/purple */
+  --aura-color: rgba(255, 170, 0, 0.4);
+  --aura-intense: rgba(255, 100, 0, 0.5);
+
+  --card-bg: rgba(255, 255, 255, 0.02);
+  --card-border: rgba(255, 255, 255, 0.05);
+}
+
+.light {
+  --background: #fafafa;
+  --foreground: #0a0a0a;
+  --text-muted: #606060;
+
+  /* Darker/more saturated auras for light background visibility */
+  --aura-color: rgba(255, 140, 0, 0.25);
+  --aura-intense: rgba(210, 60, 0, 0.35);
+
+  --card-bg: rgba(0, 0, 0, 0.03);
+  --card-border: rgba(0, 0, 0, 0.08);
 }
 
 * {
@@ -58,7 +73,7 @@ button {
 }
 
 .text-gradient {
-  background: linear-gradient(to right, #ffffff, var(--text-muted));
+  background: linear-gradient(to right, var(--foreground), var(--text-muted));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -99,11 +114,11 @@ button {
   display: inline-flex;
   align-items: center;
   padding: 0.5rem 1rem;
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--card-bg);
   border-radius: 999px;
   font-size: 0.875rem;
   font-weight: 500;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--card-border);
 }
 
 /* Calendly Glowing Badge Animations */

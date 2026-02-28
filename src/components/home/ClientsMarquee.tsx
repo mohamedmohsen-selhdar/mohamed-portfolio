@@ -23,7 +23,7 @@ function AnimatedCounter({ value, label, prefix = "" }: { value: number; label: 
 
     return (
         <div ref={ref}>
-            <h3 className="glow-on-hover" style={{ fontSize: '3.5rem', fontWeight: 800, color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <h3 className="glow-on-hover" style={{ fontSize: '3.5rem', fontWeight: 800, color: 'var(--foreground)', display: 'flex', justifyContent: 'center', alignItems: 'center', fontFamily: 'var(--font-playfair)' }}>
                 {prefix}
                 <motion.span>{displayValue}</motion.span>
             </h3>
@@ -34,7 +34,7 @@ function AnimatedCounter({ value, label, prefix = "" }: { value: number; label: 
 
 export default function ClientsMarquee() {
     return (
-        <section className="section" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.05)', borderBottom: '1px solid rgba(255, 255, 255, 0.05)', background: 'rgba(255, 255, 255, 0.02)' }}>
+        <section className="section" style={{ borderTop: '1px solid var(--card-border)', borderBottom: '1px solid var(--card-border)', background: 'var(--card-bg)' }}>
             <div className="container">
 
                 {/* Success Stats */}
@@ -90,16 +90,16 @@ export default function ClientsMarquee() {
           cursor: default;
         }
         .glow-on-hover:hover {
-          text-shadow: 0 0 25px rgba(255,255,255,0.8), 0 0 50px rgba(255,255,255,0.4);
+          text-shadow: 0 0 25px var(--foreground), 0 0 50px rgba(128,128,128,0.4);
         }
         .glow-on-hover-marquee {
-          color: rgba(255, 255, 255, 0.4);
+          color: var(--text-muted);
           transition: all 0.3s ease;
           cursor: default;
         }
         .glow-on-hover-marquee:hover {
-          color: rgba(255, 255, 255, 0.8);
-          text-shadow: 0 0 15px rgba(255,255,255,0.6), 0 0 30px rgba(255,255,255,0.3);
+          color: var(--foreground);
+          text-shadow: 0 0 15px var(--foreground), 0 0 30px rgba(128,128,128,0.3);
         }
       `}} />
         </section>

@@ -41,7 +41,7 @@ export default function ServicesSection() {
 
             {/* Title (Always Visible) */}
             <div className="container" style={{ marginBottom: isMobile ? '2rem' : '4rem', zIndex: 10, position: 'relative', textAlign: isMobile ? 'center' : 'left' }}>
-                <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: 800, letterSpacing: '-0.02em', color: '#ffffff' }}>
+                <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: 800, letterSpacing: '-0.02em', color: 'var(--foreground)' }}>
                     Services
                 </h2>
             </div>
@@ -52,7 +52,7 @@ export default function ServicesSection() {
                 <div style={{ position: 'relative', width: '100%', height: isMobile ? '300px' : '600px', display: 'flex', alignItems: 'center', justifyContent: isMobile ? 'center' : 'flex-start' }}>
 
                     {!isMobile && (
-                        <div style={{ position: 'absolute', left: '-20%', top: '50%', transform: 'translateY(-50%)', width: '200px', height: '600px', background: 'radial-gradient(ellipse at left, rgba(255,255,255,0.05) 0%, transparent 70%)', filter: 'blur(40px)', zIndex: 0 }} />
+                        <div style={{ position: 'absolute', left: '-20%', top: '50%', transform: 'translateY(-50%)', width: '200px', height: '600px', background: 'radial-gradient(ellipse at left, var(--card-border) 0%, transparent 70%)', filter: 'blur(40px)', zIndex: 0 }} />
                     )}
 
                     {/* Menu Pivot Container */}
@@ -88,16 +88,16 @@ export default function ServicesSection() {
                                         top: 0,
                                         marginTop: '-24px', // Half height
                                         padding: '0.75rem 1.5rem',
-                                        background: isActive ? '#ffffff' : 'rgba(255,255,255,0.02)',
-                                        color: isActive ? '#000000' : '#ffffff',
-                                        border: isActive ? 'none' : '1px solid rgba(255,255,255,0.1)',
+                                        background: isActive ? 'var(--foreground)' : 'var(--card-bg)',
+                                        color: isActive ? 'var(--background)' : 'var(--foreground)',
+                                        border: isActive ? 'none' : '1px solid var(--card-border)',
                                         borderRadius: '9999px',
                                         fontWeight: 700,
                                         fontSize: isMobile ? '0.875rem' : '1.125rem',
                                         cursor: 'pointer',
                                         zIndex: isActive ? 20 : 10 - distance,
                                         whiteSpace: 'nowrap',
-                                        boxShadow: isActive ? '0 10px 25px -5px rgba(255, 255, 255, 0.2)' : 'none',
+                                        boxShadow: isActive ? '0 10px 25px -5px rgba(128, 128, 128, 0.2)' : 'none',
                                         transformOrigin: 'left center'
                                     }}
                                 >
@@ -119,8 +119,8 @@ export default function ServicesSection() {
                                 exit={{ opacity: 0, x: -20, filter: 'blur(10px)' }}
                                 transition={{ duration: 0.4 }}
                                 style={{
-                                    background: 'rgba(255, 255, 255, 0.02)',
-                                    border: '1px solid rgba(255, 255, 255, 0.05)',
+                                    background: 'var(--card-bg)',
+                                    border: '1px solid var(--card-border)',
                                     borderRadius: '24px',
                                     padding: isMobile ? '2rem' : '4rem',
                                     width: '100%',
@@ -129,39 +129,39 @@ export default function ServicesSection() {
                                 }}
                             >
                                 {/* Subtle glowing gradient matching active service */}
-                                <div style={{ position: 'absolute', top: 0, right: 0, width: '300px', height: '300px', background: 'radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%)', filter: 'blur(40px)', zIndex: 0 }} />
+                                <div style={{ position: 'absolute', top: 0, right: 0, width: '300px', height: '300px', background: 'radial-gradient(circle, var(--card-border) 0%, transparent 70%)', filter: 'blur(40px)', zIndex: 0 }} />
 
                                 <div style={{ position: 'relative', zIndex: 10 }}>
-                                    <h3 style={{ fontSize: isMobile ? '2rem' : '3rem', fontWeight: 800, marginBottom: '2rem', letterSpacing: '-0.02em', color: '#ffffff' }}>
+                                    <h3 style={{ fontSize: isMobile ? '2rem' : '3rem', fontWeight: 800, marginBottom: '2rem', letterSpacing: '-0.02em', color: 'var(--foreground)' }}>
                                         {activeService.title}
                                     </h3>
 
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
                                         <div>
-                                            <h4 style={{ fontSize: '0.875rem', color: '#ffffff', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem', fontWeight: 700 }}>What I Do</h4>
-                                            <p style={{ fontSize: '1.125rem', lineHeight: 1.8, color: 'rgba(255,255,255,0.8)' }}>
+                                            <h4 style={{ fontSize: '0.875rem', color: 'var(--foreground)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem', fontWeight: 700 }}>What I Do</h4>
+                                            <p style={{ fontSize: '1.125rem', lineHeight: 1.8, color: 'var(--text-muted)' }}>
                                                 {activeService.whatIDo}
                                             </p>
                                         </div>
 
                                         <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '2rem' }}>
                                             <div>
-                                                <h4 style={{ fontSize: '0.875rem', color: '#ffffff', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem', fontWeight: 700 }}>Deliverables</h4>
-                                                <ul style={{ listStylePosition: 'outside', marginLeft: '1rem', color: 'rgba(255,255,255,0.7)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                                <h4 style={{ fontSize: '0.875rem', color: 'var(--foreground)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem', fontWeight: 700 }}>Deliverables</h4>
+                                                <ul style={{ listStylePosition: 'outside', marginLeft: '1rem', color: 'var(--text-muted)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                                                     {activeService.deliverables.map((item, i) => <li key={i}>{item}</li>)}
                                                 </ul>
                                             </div>
                                             <div>
-                                                <h4 style={{ fontSize: '0.875rem', color: '#ffffff', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem', fontWeight: 700 }}>Expected Impact</h4>
-                                                <ul style={{ listStylePosition: 'outside', marginLeft: '1rem', color: 'rgba(255,255,255,0.7)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                                <h4 style={{ fontSize: '0.875rem', color: 'var(--foreground)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem', fontWeight: 700 }}>Expected Impact</h4>
+                                                <ul style={{ listStylePosition: 'outside', marginLeft: '1rem', color: 'var(--text-muted)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                                                     {activeService.expectedImpact.map((item, i) => <li key={i}>{item}</li>)}
                                                 </ul>
                                             </div>
                                         </div>
 
-                                        <div style={{ marginTop: '1rem', paddingTop: '2rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                                        <div style={{ marginTop: '1rem', paddingTop: '2rem', borderTop: '1px solid var(--card-border)' }}>
                                             <h4 style={{ fontSize: '0.875rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.5rem', fontWeight: 700 }}>Track Record</h4>
-                                            <p style={{ fontSize: '1.25rem', fontWeight: 600, color: '#ffffff' }}>{activeService.projectsDelivered}</p>
+                                            <p style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--foreground)' }}>{activeService.projectsDelivered}</p>
                                         </div>
                                     </div>
                                 </div>

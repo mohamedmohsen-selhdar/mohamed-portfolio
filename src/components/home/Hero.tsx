@@ -41,8 +41,9 @@ export default function Hero() {
             position: 'relative',
             paddingTop: '80px',
             overflow: 'hidden',
-            backgroundColor: '#000000',
-            color: '#ffffff' /* Force dark mode specifically for the hero */
+            backgroundColor: 'var(--background)',
+            color: 'var(--foreground)',
+            transition: 'background-color 0.3s ease, color 0.3s ease'
         }}>
             {/* Floating Dots */}
             {dots.map((dot, i) => (
@@ -64,7 +65,7 @@ export default function Hero() {
                         top: `${dot.y}%`,
                         width: `${dot.size}px`,
                         height: `${dot.size}px`,
-                        backgroundColor: '#ffffff',
+                        backgroundColor: 'var(--foreground)',
                         borderRadius: '50%',
                         zIndex: 1
                     }}
@@ -106,7 +107,7 @@ export default function Hero() {
                                     exit={{ y: -50, opacity: 0 }}
                                     transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                                     className="text-gradient"
-                                    style={{ position: 'absolute', whiteSpace: 'nowrap' }}
+                                    style={{ position: 'absolute', whiteSpace: 'nowrap', fontFamily: 'var(--font-playfair)' }}
                                 >
                                     {roles[currentRoleIndex]}
                                 </motion.span>
@@ -136,7 +137,7 @@ export default function Hero() {
                         <svg width="200" height="80" viewBox="0 0 200 80" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <motion.path
                                 d="M10 40 Q 100 10 190 40"
-                                stroke="white"
+                                stroke="var(--foreground)"
                                 strokeWidth="2"
                                 strokeDasharray="5 5"
                                 fill="none"
@@ -146,7 +147,7 @@ export default function Hero() {
                             />
                             <motion.path
                                 d="M180 30 L 195 41 L 180 50"
-                                stroke="white"
+                                stroke="var(--foreground)"
                                 strokeWidth="2"
                                 fill="none"
                                 initial={{ opacity: 0 }}
@@ -169,7 +170,7 @@ export default function Hero() {
                         aspectRatio: '3/4',
                         borderRadius: '2rem',
                         overflow: 'hidden',
-                        /* Blend it into the dark background */
+                        /* Blend it into the active background */
                         maskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)',
                         WebkitMaskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)'
                     }}
