@@ -103,7 +103,7 @@ export default function CaseStudiesSection() {
                                 }}
                             >
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: '2rem', borderBottom: '1px solid var(--card-border)', paddingBottom: '2rem' }}>
-                                    <span style={{ fontSize: '3rem', color: 'var(--text-muted)', opacity: 0.5, fontWeight: 900, letterSpacing: '-0.05em', fontFamily: 'var(--font-playfair)' }}>0{activeIndex + 1}</span>
+                                    <span style={{ fontSize: '3rem', color: 'var(--text-muted)', opacity: 0.5, fontWeight: 900, letterSpacing: '-0.05em' }}>0{activeIndex + 1}</span>
                                     <div>
                                         <h3 style={{ fontSize: isMobile ? '1.5rem' : '2.25rem', fontWeight: 800, lineHeight: 1.2 }}>{study.title}</h3>
                                         <p style={{ color: 'var(--aura-intense)', fontWeight: 700, marginTop: '0.5rem', letterSpacing: '0.1em', textTransform: 'uppercase', fontSize: '0.875rem' }}>{study.company}</p>

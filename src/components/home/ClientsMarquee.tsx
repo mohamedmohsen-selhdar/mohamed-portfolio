@@ -23,7 +23,7 @@ function AnimatedCounter({ value, label, prefix = "" }: { value: number; label: 
 
     return (
         <div ref={ref}>
-            <h3 className="glow-on-hover" style={{ fontSize: '3.5rem', fontWeight: 800, color: 'var(--foreground)', display: 'flex', justifyContent: 'center', alignItems: 'center', fontFamily: 'var(--font-playfair)' }}>
+            <h3 className="glow-on-hover" style={{ fontSize: '3.5rem', fontWeight: 800, color: 'var(--foreground)', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 {prefix}
                 <motion.span>{displayValue}</motion.span>
             </h3>

@@ -9,99 +9,112 @@ import { X, Menu } from "lucide-react";
 export default function LayoutWrapper({ children }: { children: React.ReactNode }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [mounted, setMounted] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
         setMounted(true);
+        const checkMobile = () => setIsMobile(window.innerWidth < 768);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
     }, []);
 
+    // Body scroll lock
+    useEffect(() => {
+        if (isMenuOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+    }, [isMenuOpen]);
+
     return (
-        <div style={{ backgroundColor: '#000', minHeight: '100vh', width: '100%', overflow: 'hidden', position: 'relative' }}>
-            {/* Background Menu Layer */}
-            {mounted && (
-                <AnimatePresence>
-                    {isMenuOpen && (
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            transition={{ duration: 0.5 }}
-                            style={{
-                                position: 'absolute',
-                                inset: 0,
-                                zIndex: 0,
-                                display: 'flex',
-                                flexDirection: 'column',
-                                padding: '2rem',
-                                color: 'white'
-                            }}
-                        >
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4rem' }}>
-                                <button
+        <div style={{ backgroundColor: '#050505', minHeight: '100vh', width: '100%', overflow: 'hidden', position: 'relative', perspective: '1500px' }}>
+
+            {/* Background Image Layer */}
+            <div style={{ position: 'absolute', inset: 0, zIndex: 0, opacity: isMenuOpen ? 0.3 : 0, transition: 'opacity 0.6s ease' }}>
+                <Image
+                    src="/menu-bg.jpg"
+                    alt="Precision Robotic Arm Background"
+                    fill
+                    style={{ objectFit: 'cover', filter: 'grayscale(100%) contrast(1.2)' }}
+                    priority
+                />
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(5,5,5,0.95), transparent)' }} />
+            </div>
+
+            {/* Menu Links Layer (Left aligned) */}
+            <div style={{
+                position: 'fixed',
+                left: 0,
+                top: 0,
+                height: '100vh',
+                width: isMobile ? '80vw' : '40vw',
+                zIndex: 5,
+                padding: isMobile ? '3rem 2rem' : '5rem 4rem',
+                display: 'flex',
+                flexDirection: 'column',
+                pointerEvents: isMenuOpen ? 'auto' : 'none',
+                opacity: isMenuOpen ? 1 : 0,
+                transition: 'opacity 0.5s ease',
+                color: 'white'
+            }}>
+                <button
+                    onClick={() => setIsMenuOpen(false)}
+                    style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '1.25rem', fontWeight: 500, cursor: 'pointer', marginBottom: '4rem', opacity: 0.7, transition: 'opacity 0.3s' }}
+                    onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
+                    onMouseLeave={(e) => e.currentTarget.style.opacity = '0.7'}
+                >
+                    <X size={24} /> Close
+                </button>
+
+                <nav style={{ display: 'flex', flexDirection: 'column', gap: '2rem', flex: 1, justifyContent: 'center' }}>
+                    {[
+                        { name: 'Home', path: '/' },
+                        { name: 'Services', path: '/services' },
+                        { name: 'Case Studies', path: '/case-studies' },
+                        { name: 'Free Templates', path: '/free-templates' }
+                    ].map((item, i) => (
+                        <div key={item.name} style={{ overflow: 'hidden' }}>
+                            <motion.div
+                                initial={{ y: 50, opacity: 0 }}
+                                animate={isMenuOpen ? { y: 0, opacity: 1 } : { y: 50, opacity: 0 }}
+                                transition={{ delay: isMenuOpen ? 0.2 + (i * 0.1) : 0, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                            >
+                                <Link
+                                    href={item.path}
                                     onClick={() => setIsMenuOpen(false)}
-                                    style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '1rem', fontWeight: 500, cursor: 'pointer', zIndex: 60 }}
+                                    style={{
+                                        fontSize: 'min(3.5rem, 10vw)',
+                                        fontWeight: 800,
+                                        letterSpacing: '-0.02em',
+                                        color: 'white',
+                                        textDecoration: 'none',
+                                        display: 'block',
+                                        transition: 'transform 0.3s ease, color 0.3s ease'
+                                    }}
+                                    className="menu-link-hover"
                                 >
-                                    <X size={24} /> Close
-                                </button>
-                            </div>
+                                    {item.name}
+                                </Link>
+                            </motion.div>
+                        </div>
+                    ))}
+                </nav>
+            </div>
 
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', flex: 1, alignItems: 'center' }}>
-                                {/* Left: Robotic Arm Image */}
-                                <motion.div
-                                    initial={{ opacity: 0, scale: 0.9 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    transition={{ delay: 0.2, duration: 0.8 }}
-                                    style={{ position: 'relative', width: '100%', height: '70vh', borderRadius: '1rem', overflow: 'hidden' }}
-                                >
-                                    <Image
-                                        src="/robotic-arm.png"
-                                        alt="Precision Robotic Arm"
-                                        fill
-                                        style={{ objectFit: 'cover', filter: 'grayscale(100%) contrast(1.2)' }}
-                                        priority
-                                    />
-                                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, transparent, #000 90%)' }} />
-                                </motion.div>
-
-                                {/* Right: Navigation Links */}
-                                <nav style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-                                    <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.3 }}>
-                                        <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem' }}>Menu</p>
-                                    </motion.div>
-
-                                    {[
-                                        { name: 'Home', path: '/' },
-                                        { name: 'Services', path: '/services' },
-                                        { name: 'Case Studies', path: '/case-studies' },
-                                        { name: 'Free Templates', path: '/free-templates' }
-                                    ].map((item, i) => (
-                                        <motion.div
-                                            key={item.name}
-                                            initial={{ x: -50, opacity: 0 }}
-                                            animate={{ x: 0, opacity: 1 }}
-                                            transition={{ delay: 0.4 + i * 0.1, duration: 0.5 }}
-                                        >
-                                            <Link href={item.path} onClick={() => setIsMenuOpen(false)} style={{ fontSize: '3rem', fontWeight: 600, letterSpacing: '-0.02em', color: 'white', textDecoration: 'none', transition: 'color 0.3s' }}>
-                                                {item.name}
-                                            </Link>
-                                        </motion.div>
-                                    ))}
-                                </nav>
-                            </div>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-            )}
-
-            {/* Foreground Content Layer */}
+            {/* Foreground Content Layer (The 3D Tilted Page) */}
             <motion.div
                 animate={{
-                    scale: isMenuOpen ? 0.9 : 1,
+                    scale: isMenuOpen ? (isMobile ? 0.8 : 0.85) : 1,
+                    x: isMenuOpen ? (isMobile ? '60vw' : '40vw') : 0,
                     y: isMenuOpen ? '5vh' : 0,
-                    rotateZ: isMenuOpen ? -3 : 0,
-                    borderRadius: isMenuOpen ? '2rem' : 0,
+                    rotateY: isMenuOpen ? -15 : 0,
+                    rotateZ: isMenuOpen ? -2 : 0,
+                    borderRadius: isMenuOpen ? '32px' : '0px',
                     opacity: isMenuOpen ? 0.7 : 1,
                 }}
-                transition={{ type: "spring", stiffness: 200, damping: 25 }}
+                transition={{ type: "spring", stiffness: 180, damping: 25 }}
                 style={{
                     backgroundColor: 'var(--background)',
                     minHeight: '100vh',
@@ -109,10 +122,20 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
                     position: 'relative',
                     zIndex: 10,
                     overflow: isMenuOpen ? 'hidden' : 'auto',
-                    transformOrigin: 'top center',
-                    boxShadow: isMenuOpen ? '0 25px 50px -12px rgba(255, 255, 255, 0.1)' : 'none',
+                    transformOrigin: 'right center',
+                    boxShadow: isMenuOpen ? '-20px 0 50px rgba(0, 0, 0, 0.5)' : 'none',
+                    pointerEvents: isMenuOpen ? 'none' : 'auto', // disable clicking background elements when menu is open
                 }}
             >
+                {/* Visual Overlay to act as a close trigger for the tilted page */}
+                {isMenuOpen && (
+                    <div
+                        style={{ position: 'absolute', inset: 0, zIndex: 9999, cursor: 'pointer' }}
+                        onClick={() => setIsMenuOpen(false)}
+                        title="Close Menu"
+                    />
+                )}
+
                 {/* Navigation Bar inside the scaled wrapper */}
                 <nav
                     style={{
@@ -128,7 +151,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
                     }}
                 >
                     <button
-                        style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '0.875rem', fontWeight: 500, letterSpacing: '0.05em', textTransform: 'uppercase', opacity: isMenuOpen ? 0 : 1, transition: 'opacity 0.3s' }}
+                        style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '0.875rem', fontWeight: 500, letterSpacing: '0.05em', textTransform: 'uppercase', opacity: isMenuOpen ? 0 : 1, transition: 'opacity 0.3s', color: 'var(--foreground)' }}
                         onClick={() => setIsMenuOpen(true)}
                         disabled={isMenuOpen}
                     >
@@ -136,7 +159,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
                         Menu
                     </button>
 
-                    <Link href="/" style={{ fontSize: '1.25rem', fontWeight: 700, letterSpacing: '-0.02em', opacity: isMenuOpen ? 0 : 1, transition: 'opacity 0.3s' }}>
+                    <Link href="/" style={{ fontSize: '1.25rem', fontWeight: 700, letterSpacing: '-0.02em', opacity: isMenuOpen ? 0 : 1, transition: 'opacity 0.3s', color: 'var(--foreground)' }}>
                         M.M.
                     </Link>
                 </nav>

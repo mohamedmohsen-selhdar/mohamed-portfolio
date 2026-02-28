@@ -94,7 +94,7 @@ export default function TestimonialsSection() {
                             }}
                         >
                             {/* Decorative Quote Mark */}
-                            <div style={{ position: 'absolute', top: '1.5rem', right: '2rem', fontSize: '6rem', color: 'var(--card-border)', fontFamily: 'var(--font-playfair)', lineHeight: 1, zIndex: 0, pointerEvents: 'none' }}>
+                            <div style={{ position: 'absolute', top: '1.5rem', right: '2rem', fontSize: '6rem', color: 'var(--card-border)', lineHeight: 1, zIndex: 0, pointerEvents: 'none' }}>
                                 "
                             </div>
 
@@ -109,7 +109,7 @@ export default function TestimonialsSection() {
                             </p>
 
                             <div style={{ borderTop: '1px solid var(--card-border)', paddingTop: '1.5rem', zIndex: 10, display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                                <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--aura-intense), var(--aura-color))', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 800, fontSize: '1.25rem', fontFamily: 'var(--font-playfair)' }}>
+                                <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--aura-intense), var(--aura-color))', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 800, fontSize: '1.25rem' }}>
                                     {testimonial.author.charAt(testimonial.author.startsWith('Mr. ') ? 4 : 0)}
                                 </div>
                                 <div>

@@ -84,18 +84,17 @@ export default function Hero() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.2 }}
                         style={{
-                            fontSize: 'clamp(2rem, 4vw, 3.5rem)', /* Minimized headline */
-
+                            fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
                             fontWeight: 800,
-                            lineHeight: 1.1,
-                            letterSpacing: '-0.04em',
+                            lineHeight: 1.2,
+                            letterSpacing: '-0.02em',
                             marginBottom: '2rem',
                             display: 'flex',
-                            flexDirection: 'column'
+                            flexDirection: 'column',
+                            flexWrap: 'wrap'
                         }}
                     >
-                        <span>Hi, I'm</span>
-                        <span>Mohamed,</span>
+                        <span style={{ display: 'block' }}>Hi, I'm Mohamed,</span>
 
                         {/* Vertical Text Swapper */}
                         <div style={{ height: '1.2em', position: 'relative', overflow: 'hidden', marginTop: '0.2em' }}>
@@ -107,7 +106,7 @@ export default function Hero() {
                                     exit={{ y: -50, opacity: 0 }}
                                     transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                                     className="text-gradient"
-                                    style={{ position: 'absolute', whiteSpace: 'nowrap', fontFamily: 'var(--font-playfair)' }}
+                                    style={{ position: 'absolute', whiteSpace: 'nowrap' }}
                                 >
                                     {roles[currentRoleIndex]}
                                 </motion.span>
