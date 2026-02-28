@@ -23,7 +23,7 @@ function AnimatedCounter({ value, label, prefix = "" }: { value: number; label: 
 
     return (
         <div ref={ref}>
-            <h3 style={{ fontSize: '3.5rem', fontWeight: 800, color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <h3 style={{ fontSize: '3.5rem', fontWeight: 800, color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center', textShadow: '0 0 25px rgba(255,255,255,0.8), 0 0 50px rgba(255,255,255,0.4)' }}>
                 {prefix}
                 <motion.span>{displayValue}</motion.span>
             </h3>
@@ -68,9 +68,10 @@ export default function ClientsMarquee() {
                             style={{
                                 fontSize: '2rem',
                                 fontWeight: 700,
-                                color: 'rgba(255, 255, 255, 0.4)',
+                                color: 'rgba(255, 255, 255, 0.8)', // Made brighter for the glow
                                 textTransform: 'uppercase',
-                                letterSpacing: '0.1em'
+                                letterSpacing: '0.1em',
+                                textShadow: '0 0 15px rgba(255,255,255,0.6), 0 0 30px rgba(255,255,255,0.3)'
                             }}
                         >
                             {client}
