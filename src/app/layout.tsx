@@ -10,6 +10,7 @@ export const metadata: Metadata = {
 };
 
 import LayoutWrapper from "@/components/layout/LayoutWrapper";
+import CalendlyWidget from "@/components/layout/CalendlyWidget";
 
 export default function RootLayout({
   children,
@@ -22,6 +23,7 @@ export default function RootLayout({
         <LayoutWrapper>
           {children}
         </LayoutWrapper>
+        <CalendlyWidget />
       </body>
     </html>
   );

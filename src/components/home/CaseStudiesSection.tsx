@@ -96,11 +96,11 @@ export default function CaseStudiesSection() {
                                         transition={{ duration: 0.4 }}
                                         style={{ overflow: 'hidden' }}
                                     >
-                                        <p style={{ color: 'var(--aura-color)', fontWeight: 600, marginBottom: '2rem', fontSize: '1.125rem' }}>{study.company}</p>
+                                        <p style={{ color: '#ffffff', fontWeight: 600, marginBottom: '2rem', fontSize: '1.125rem' }}>{study.company}</p>
 
                                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '3rem' }}>
                                             <div>
-                                                <h4 style={{ textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.875rem', color: '#f87171', marginBottom: '1rem', fontWeight: 700 }}>Core Problem</h4>
+                                                <h4 style={{ textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.875rem', color: '#ffffff', marginBottom: '1rem', fontWeight: 700 }}>Core Problem</h4>
                                                 <p className="text-muted" style={{ marginBottom: '1rem', fontStyle: 'italic', borderLeft: '3px solid rgba(255,255,255,0.1)', paddingLeft: '1rem' }}>"{study.context}"</p>
                                                 <ul style={{ color: 'var(--text-muted)', listStylePosition: 'inside', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                                                     {study.coreProblem.map((item, i) => <li key={i}>{item}</li>)}
@@ -108,12 +108,12 @@ export default function CaseStudiesSection() {
                                             </div>
 
                                             <div>
-                                                <h4 style={{ textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.875rem', color: '#10b981', marginBottom: '1rem', fontWeight: 700 }}>Measurable Impact</h4>
+                                                <h4 style={{ textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.875rem', color: '#ffffff', marginBottom: '1rem', fontWeight: 700 }}>Measurable Impact</h4>
                                                 <p style={{ marginBottom: '1rem', fontWeight: 600 }}>Intervention: {study.intervention}</p>
                                                 <ul style={{ listStylePosition: 'inside', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                                                     {study.measurableImpact.map((item, i) => (
                                                         <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
-                                                            <span style={{ color: '#10b981' }}>✓</span> {item}
+                                                            <span style={{ color: '#ffffff' }}>✓</span> {item}
                                                         </li>
                                                     ))}
                                                 </ul>

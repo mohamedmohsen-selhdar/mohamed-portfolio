@@ -3,7 +3,6 @@ import ClientsMarquee from "@/components/home/ClientsMarquee";
 import ServicesSection from "@/components/home/ServicesSection";
 import CaseStudiesSection from "@/components/home/CaseStudiesSection";
 import Footer from "@/components/layout/Footer";
-import FloatingButton from "@/components/layout/FloatingButton";
 
 export default function Home() {
   return (
@@ -14,7 +13,6 @@ export default function Home() {
         <ServicesSection />
         <CaseStudiesSection />
       </div>
-      <FloatingButton />
       <Footer />
     </main>
   );

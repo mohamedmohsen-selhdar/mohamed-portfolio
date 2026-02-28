@@ -29,7 +29,7 @@ export default function CaseStudiesPage() {
                         style={{ borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '3rem' }}
                     >
                         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-                            <span style={{ fontSize: '0.875rem', color: 'var(--aura-color)', fontWeight: 700, letterSpacing: '0.1em' }}>0{i + 1}</span>
+                            <span style={{ fontSize: '0.875rem', color: '#ffffff', fontWeight: 700, letterSpacing: '0.1em' }}>0{i + 1}</span>
                             <h2 style={{ fontSize: '2rem', fontWeight: 700 }}>{study.title}</h2>
                         </div>
                         {study.company && <p style={{ fontSize: '1.125rem', fontWeight: 600, marginBottom: '1.5rem' }}>{study.company}</p>}

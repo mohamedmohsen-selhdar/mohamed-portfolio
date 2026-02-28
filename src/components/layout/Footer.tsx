@@ -17,7 +17,9 @@ export default function Footer() {
 
                 <div style={{ display: 'flex', gap: '1.5rem' }}>
                     <a
-                        href="#"
+                        href="https://www.linkedin.com/in/mohamed-mohsen-business-consultant/"
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="aura-card"
                         style={{ padding: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%' }}
                         aria-label="LinkedIn"

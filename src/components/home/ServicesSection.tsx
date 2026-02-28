@@ -74,7 +74,7 @@ export default function ServicesSection() {
                             <p className="text-muted" style={{ display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden', marginBottom: '1.5rem', lineHeight: 1.6 }}>
                                 {service.whatIDo}
                             </p>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--aura-intense)', fontWeight: 600 }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#ffffff', fontWeight: 600 }}>
                                 Explore <ArrowRight size={16} />
                             </div>
                         </div>
@@ -138,19 +138,19 @@ export default function ServicesSection() {
 
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
                                 <div>
-                                    <h4 style={{ fontSize: '1.25rem', color: 'var(--aura-color)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem', fontWeight: 700 }}>What I Do</h4>
+                                    <h4 style={{ fontSize: '1.25rem', color: '#ffffff', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem', fontWeight: 700 }}>What I Do</h4>
                                     <p style={{ fontSize: '1.125rem', lineHeight: 1.8, color: 'rgba(255,255,255,0.8)' }}>{selectedService.whatIDo}</p>
                                 </div>
 
                                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem' }}>
                                     <div>
-                                        <h4 style={{ fontSize: '1.1rem', color: 'var(--aura-color)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem', fontWeight: 700 }}>Deliverables</h4>
+                                        <h4 style={{ fontSize: '1.1rem', color: '#ffffff', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem', fontWeight: 700 }}>Deliverables</h4>
                                         <ul style={{ listStylePosition: 'inside', color: 'rgba(255,255,255,0.8)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                                             {selectedService.deliverables.map((item, i) => <li key={i}>{item}</li>)}
                                         </ul>
                                     </div>
                                     <div>
-                                        <h4 style={{ fontSize: '1.1rem', color: '#10b981', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem', fontWeight: 700 }}>Expected Impact</h4>
+                                        <h4 style={{ fontSize: '1.1rem', color: '#ffffff', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem', fontWeight: 700 }}>Expected Impact</h4>
                                         <ul style={{ listStylePosition: 'inside', color: 'rgba(255,255,255,0.8)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                                             {selectedService.expectedImpact.map((item, i) => <li key={i}>{item}</li>)}
                                         </ul>
