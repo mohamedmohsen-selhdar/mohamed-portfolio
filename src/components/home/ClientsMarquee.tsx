@@ -23,7 +23,7 @@ function AnimatedCounter({ value, label, prefix = "" }: { value: number; label: 
 
     return (
         <div ref={ref}>
-            <h3 style={{ fontSize: '3.5rem', fontWeight: 800, color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center', textShadow: '0 0 25px rgba(255,255,255,0.8), 0 0 50px rgba(255,255,255,0.4)' }}>
+            <h3 className="glow-on-hover" style={{ fontSize: '3.5rem', fontWeight: 800, color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 {prefix}
                 <motion.span>{displayValue}</motion.span>
             </h3>
@@ -65,13 +65,12 @@ export default function ClientsMarquee() {
                     {[...clients, ...clients, ...clients].map((client, index) => (
                         <span
                             key={index}
+                            className="glow-on-hover-marquee"
                             style={{
                                 fontSize: '2rem',
                                 fontWeight: 700,
-                                color: 'rgba(255, 255, 255, 0.8)', // Made brighter for the glow
                                 textTransform: 'uppercase',
-                                letterSpacing: '0.1em',
-                                textShadow: '0 0 15px rgba(255,255,255,0.6), 0 0 30px rgba(255,255,255,0.3)'
+                                letterSpacing: '0.1em'
                             }}
                         >
                             {client}
@@ -85,6 +84,22 @@ export default function ClientsMarquee() {
         @keyframes scroll {
           0% { transform: translateX(0); }
           100% { transform: translateX(calc(-33.33% - 1.33rem)); } /* Shifts by one third (one original array length) */
+        }
+        .glow-on-hover {
+          transition: text-shadow 0.3s ease;
+          cursor: default;
+        }
+        .glow-on-hover:hover {
+          text-shadow: 0 0 25px rgba(255,255,255,0.8), 0 0 50px rgba(255,255,255,0.4);
+        }
+        .glow-on-hover-marquee {
+          color: rgba(255, 255, 255, 0.4);
+          transition: all 0.3s ease;
+          cursor: default;
+        }
+        .glow-on-hover-marquee:hover {
+          color: rgba(255, 255, 255, 0.8);
+          text-shadow: 0 0 15px rgba(255,255,255,0.6), 0 0 30px rgba(255,255,255,0.3);
         }
       `}} />
         </section>
