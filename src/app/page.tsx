@@ -2,6 +2,7 @@ import Hero from "@/components/home/Hero";
 import ClientsMarquee from "@/components/home/ClientsMarquee";
 import ServicesSection from "@/components/home/ServicesSection";
 import CaseStudiesSection from "@/components/home/CaseStudiesSection";
+import ArticlesSection from "@/components/home/ArticlesSection";
 import TestimonialsSection from "@/components/home/TestimonialsSection";
 import ManifestoSection from "@/components/home/ManifestoSection";
 import Footer from "@/components/layout/Footer";
@@ -14,6 +15,7 @@ export default function Home() {
         <ClientsMarquee />
         <ServicesSection />
         <CaseStudiesSection />
+        <ArticlesSection />
         <TestimonialsSection />
         <ManifestoSection />
       </div>

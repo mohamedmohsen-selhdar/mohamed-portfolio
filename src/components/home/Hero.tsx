@@ -158,7 +158,30 @@ export default function Hero() {
                             alignItems: isMobile ? 'center' : 'flex-start'
                         }}
                     >
-                        <span style={{ display: 'block' }}>Hi, I'm Mohamed,</span>
+                        {/* Typewriter Greeting */}
+                        <div style={{ display: 'block' }}>
+                            <motion.span
+                                initial={{ opacity: 1 }}
+                                animate={{ opacity: 1 }}
+                                style={{ display: 'inline-block', whiteSpace: 'normal', wordBreak: 'keep-all' }}
+                            >
+                                {"Hi, I'm Mohamed,".split('').map((char, index) => (
+                                    <motion.span
+                                        key={index}
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        transition={{ duration: 0.1, delay: index * 0.05 }}
+                                    >
+                                        {char}
+                                    </motion.span>
+                                ))}
+                                <motion.span
+                                    animate={{ opacity: [1, 0] }}
+                                    transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }}
+                                    style={{ display: 'inline-block', width: '2px', height: '1em', backgroundColor: 'var(--foreground)', verticalAlign: 'middle', marginLeft: '2px' }}
+                                />
+                            </motion.span>
+                        </div>
 
                         {/* Vertical Text Swapper */}
                         <div style={{ height: '1.2em', position: 'relative', overflow: 'hidden', marginTop: '0.2em' }}>
@@ -195,7 +218,7 @@ export default function Hero() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 1, duration: 1 }}
-                        style={{ position: 'absolute', right: '-10%', top: '50%', transform: 'translateY(-50%)', opacity: 0.4 }}
+                        style={{ position: 'absolute', right: '-10%', top: '50%', transform: 'translateY(-50%)', opacity: 0.4, display: isMobile ? 'none' : 'block' }}
                     >
                         <svg width="200" height="80" viewBox="0 0 200 80" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <motion.path

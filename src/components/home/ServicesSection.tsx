@@ -85,8 +85,9 @@ export default function ServicesSection() {
                                     exit={{ opacity: 0, y: -30, filter: 'blur(10px)' }}
                                     transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                                     style={{
-                                        position: 'absolute',
-                                        inset: 0,
+                                        position: isMobile ? 'relative' : 'absolute',
+                                        inset: isMobile ? undefined : 0,
+                                        width: '100%',
                                         background: 'var(--card-bg)',
                                         border: '1px solid var(--card-border)',
                                         borderRadius: '32px',
