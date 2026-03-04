@@ -7,8 +7,8 @@ import { FileEdit, Plus, Trash2, LogOut } from "lucide-react";
 import dynamic from "next/dynamic";
 
 // Dynamically import Quill to prevent SSR missing-document errors
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
-import "react-quill/dist/quill.snow.css";
+const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
+import "react-quill-new/dist/quill.snow.css";
 
 type Article = {
     id: string;
