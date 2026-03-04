@@ -262,7 +262,7 @@ export default function Hero() {
                     }}
                 >
                     <Image
-                        src="/hero-photo3.jpg"
+                        src="/hero-photo3-transparent.png"
                         alt="Mohamed Mohsen Portrait"
                         fill
                         style={{ objectFit: 'cover', objectPosition: 'center' }}
