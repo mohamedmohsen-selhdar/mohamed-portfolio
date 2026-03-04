@@ -1,166 +1,108 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { createClient } from "@/lib/supabase/client";
+import { GlowingEffect } from "@/components/ui/glowing-effect";
+import { Box, Lock, Sparkles, Settings, Search, Layout } from "lucide-react";
 
 type ServiceData = {
     id: string;
     title: string;
     what_i_do: string;
-    deliverables: string[];
-    expected_impact: string[];
-    projects_delivered: string;
-    project_names: string[];
 };
 
+const ICONS = [Box, Lock, Sparkles, Settings, Search, Layout];
+
 export default function ServicesSection() {
-    const [activeIndex, setActiveIndex] = useState(0);
-    const [mounted, setMounted] = useState(false);
-    const [isMobile, setIsMobile] = useState(false);
     const [services, setServices] = useState<ServiceData[]>([]);
     const [loading, setLoading] = useState(true);
-
     const supabase = createClient();
 
     useEffect(() => {
-        setMounted(true);
-        const checkMobile = () => setIsMobile(window.innerWidth < 1024);
-        checkMobile();
-        window.addEventListener('resize', checkMobile);
-
         const fetchServices = async () => {
-            const { data, error } = await supabase
+            const { data } = await supabase
                 .from('services')
                 .select('*')
                 .order('created_at', { ascending: true });
+
             if (data) setServices(data);
             setLoading(false);
         };
         fetchServices();
-
-        return () => window.removeEventListener('resize', checkMobile);
     }, []);
-
-    const activeService = services[activeIndex];
 
     if (loading && services.length === 0) return null;
 
-    return (
-        <section className="section" style={{ position: 'relative', overflow: 'hidden', minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', backgroundColor: 'var(--background)', color: 'var(--foreground)', paddingTop: '100px', paddingBottom: '100px' }}>
-            <div className="container">
+    // Helper to strip HTML from what_i_do for the small description
+    const stripHtml = (html: string) => {
+        if (typeof document === 'undefined') return html.replace(/<[^>]+>/g, '');
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        return doc.body.textContent || "";
+    };
 
-                {/* Header Sequence */}
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', marginBottom: '4rem' }}>
-                    <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1 }}>
+    return (
+        <section className="py-24 bg-black w-full text-white overflow-hidden relative" id="services">
+            <div className="container px-4 md:px-6 mx-auto">
+                <div className="mb-12 md:mb-20">
+                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-4">
                         How I can help you
                     </h2>
-                    <span style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.05em', marginTop: '0.5rem', color: 'var(--text-muted)' }}>
+                    <p className="text-zinc-400 font-mono text-sm tracking-widest uppercase">
                         (SERVICES)
-                    </span>
+                    </p>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1.5fr', gap: isMobile ? '4rem' : '8rem', alignItems: 'center' }}>
+                <ul className="grid grid-cols-1 grid-rows-none gap-4 md:grid-cols-12 md:grid-rows-3 lg:gap-6">
+                    {services.map((service, index) => {
+                        const Icon = ICONS[index % ICONS.length];
+                        const description = stripHtml(service.what_i_do).substring(0, 100) + "...";
 
-                    {/* Left Side: Service List */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
-                        {mounted && services.map((service, index) => {
-                            const isActive = index === activeIndex;
-                            return (
-                                <button
-                                    key={service.id}
-                                    onClick={() => setActiveIndex(index)}
-                                    style={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: '1.5rem',
-                                        padding: '2rem 1rem',
-                                        borderBottom: index !== services.length - 1 ? '1px solid var(--card-border)' : 'none',
-                                        borderLeft: isActive ? '4px solid var(--foreground)' : '4px solid transparent',
-                                        background: 'transparent',
-                                        textAlign: 'left',
-                                        cursor: 'pointer',
-                                        transition: 'all 0.3s ease',
-                                        opacity: isActive ? 1 : 0.4
-                                    }}
-                                    onMouseEnter={(e) => {
-                                        if (!isActive) e.currentTarget.style.opacity = '0.7';
-                                    }}
-                                    onMouseLeave={(e) => {
-                                        if (!isActive) e.currentTarget.style.opacity = '0.4';
-                                    }}
-                                >
-                                    <span style={{ fontSize: '0.875rem', fontWeight: 600, fontFamily: 'monospace' }}>
-                                        (0{index + 1})
-                                    </span>
-                                    <span style={{ fontSize: '1.5rem', fontWeight: isActive ? 800 : 500, letterSpacing: '-0.02em' }}>
-                                        {service.title}
-                                    </span>
-                                </button>
-                            );
-                        })}
-                    </div>
+                        // Create bento grid layout based on index
+                        let gridClass = "md:col-span-12";
+                        if (index === 0) gridClass = "md:col-span-4 md:row-span-2"; // Tall left
+                        else if (index === 1) gridClass = "md:col-span-4 md:row-span-3"; // Taller middle
+                        else if (index === 2) gridClass = "md:col-span-4 md:row-span-2"; // Tall right
+                        else if (index === 3) gridClass = "md:col-span-4 md:row-span-1"; // Bottom left
+                        else if (index === 4) gridClass = "md:col-span-8 md:row-span-1"; // Bottom wide right
+                        else gridClass = "md:col-span-4 md:row-span-1"; // Fallback
 
-                    {/* Right Side: Active Service Details Card */}
-                    <div style={{ position: 'relative', minHeight: isMobile ? '500px' : '600px', height: isMobile ? 'auto' : '600px', width: '100%' }}>
-                        <AnimatePresence mode="wait">
-                            {mounted && (
-                                <motion.div
-                                    key={activeService.id}
-                                    initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
-                                    animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                                    exit={{ opacity: 0, y: -30, filter: 'blur(10px)' }}
-                                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                                    style={{
-                                        position: isMobile ? 'relative' : 'absolute',
-                                        inset: isMobile ? undefined : 0,
-                                        width: '100%',
-                                        background: 'var(--card-bg)',
-                                        border: '1px solid var(--card-border)',
-                                        borderRadius: '32px',
-                                        padding: isMobile ? '2.5rem' : '4rem',
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        justifyContent: 'center',
-                                        overflow: 'hidden'
-                                    }}
-                                >
-                                    {/* Abstract background gradient placeholder for the image aesthetic */}
-                                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, var(--aura-intense) 0%, transparent 60%)', opacity: 0.1, zIndex: 0 }} />
+                        // Handle just 3-4 items gracefully
+                        if (services.length <= 3) {
+                            gridClass = "md:col-span-4 md:row-span-1 min-h-[300px]";
+                        }
 
-                                    <div style={{ position: 'relative', zIndex: 10 }}>
-                                        <h3 style={{ fontSize: isMobile ? '2rem' : '3rem', fontWeight: 800, marginBottom: '2rem', letterSpacing: '-0.02em', color: 'var(--foreground)' }}>
-                                            {activeService.title}
-                                        </h3>
+                        return (
+                            <li
+                                key={service.id}
+                                className={`relative flex flex-col justify-between rounded-2xl border border-white/5 bg-zinc-950 p-6 md:p-8 min-h-[250px] list-none ${gridClass}`}
+                            >
+                                <GlowingEffect
+                                    spread={40}
+                                    glow={true}
+                                    disabled={false}
+                                    proximity={64}
+                                    inactiveZone={0.01}
+                                    borderWidth={1.5}
+                                />
 
-                                        <p className="text-xl leading-relaxed mb-8 opacity-90" dangerouslySetInnerHTML={{ __html: activeService.what_i_do }} />
-
-                                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '2rem' }}>
-                                            {activeService.expected_impact.map((benefit: string, idx: number) => (
-                                                <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-                                                    <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'var(--aura-color)' }} />
-                                                    <span style={{ fontSize: '1.125rem', color: 'var(--foreground)' }}>{benefit}</span>
-                                                </div>
-                                            ))}
-                                        </div>
-
-                                        <div style={{ marginTop: '3rem', paddingTop: '1.5rem', borderTop: '1px solid var(--card-border)' }}>
-                                            <p style={{ fontSize: '0.875rem', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '1rem' }}>Track Record</p>
-                                            <p className="text-sm uppercase tracking-wider opacity-60 mb-4">{activeService.projects_delivered}</p>
-                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
-                                                {activeService.project_names.map((project: string, idx: number) => (
-                                                    <span key={idx} style={{ fontSize: '1rem', color: 'var(--foreground)', fontWeight: 600, paddingBottom: '0.25rem', borderBottom: '1px solid var(--border-subtle)' }}>
-                                                        {project}
-                                                    </span>
-                                                ))}
-                                            </div>
-                                        </div>
+                                <div className="relative z-10 flex justify-between flex-col h-full">
+                                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 border border-white/10 shadow-sm mb-12">
+                                        <Icon className="h-5 w-5 text-white/80" />
                                     </div>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-                    </div>
-                </div>
+
+                                    <div className="mt-auto">
+                                        <h3 className="text-xl md:text-2xl font-bold font-sans text-white mb-3">
+                                            {service.title}
+                                        </h3>
+                                        <p className="text-sm md:text-base text-zinc-400 leading-relaxed max-w-[90%]">
+                                            {description}
+                                        </p>
+                                    </div>
+                                </div>
+                            </li>
+                        );
+                    })}
+                </ul>
             </div>
         </section>
     );
