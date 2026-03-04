@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Sun, Moon } from "lucide-react";
-import { SparklesCore } from "../ui/sparkles";
+
 
 
 const roles = [
@@ -210,21 +210,7 @@ export default function Hero() {
                         style={{ fontSize: '1.25rem', lineHeight: 1.6, maxWidth: '500px', marginBottom: '3rem' }}
                         className="text-muted"
                     >
-                        I help SMEs optimize operations, reduce costs, and accelerate growth through{" "}
-                        <span style={{ position: 'relative', display: 'inline-block', padding: '0 0.2em' }}>
-                            <div style={{ position: 'absolute', inset: '-150%', zIndex: 0, pointerEvents: 'none' }}>
-                                <SparklesCore
-                                    id="precision-sparkles"
-                                    background="transparent"
-                                    minSize={0.4}
-                                    maxSize={1}
-                                    particleDensity={1200}
-                                    className="w-full h-full"
-                                    particleColor={isLightMode ? "#F5A623" : "#FFFFFF"}
-                                />
-                            </div>
-                            <strong style={{ position: 'relative', zIndex: 10, color: 'var(--foreground)' }}>precision execution.</strong>
-                        </span>
+                        I help SMEs optimize operations, reduce costs, and accelerate growth through precision execution.
                     </motion.p>
 
                     {/* Floating button moved to FloatingButton.tsx */}
@@ -272,13 +258,11 @@ export default function Hero() {
                         aspectRatio: '3/4',
                         borderRadius: '2rem',
                         overflow: 'hidden',
-                        /* Blend it into the active background */
-                        maskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)',
-                        WebkitMaskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)'
+                        /* Reverted to opaque image */
                     }}
                 >
                     <Image
-                        src="/hero-photo3-transparent.png"
+                        src="/hero-photo3.jpg"
                         alt="Mohamed Mohsen Portrait"
                         fill
                         style={{ objectFit: 'cover', objectPosition: 'center' }}
