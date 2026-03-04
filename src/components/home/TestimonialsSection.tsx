@@ -61,10 +61,10 @@ export default function TestimonialsSection() {
     const activeQuote = testimonials[activeIndex];
 
     return (
-        <section className="section" style={{ position: 'relative', overflow: 'hidden', minHeight: '80vh', display: 'flex', alignItems: 'center', backgroundColor: 'var(--background)' }}>
+        <section className="section" style={{ position: 'relative', overflow: 'hidden', minHeight: isMobile ? '60vh' : '80vh', display: 'flex', alignItems: 'center', backgroundColor: 'var(--background)' }}>
             <div className="container">
 
-                <div style={{ maxWidth: '900px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '4rem' }}>
+                <div style={{ maxWidth: '900px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: isMobile ? '2rem' : '4rem' }}>
 
                     {/* Minimal Section Label */}
                     <motion.div

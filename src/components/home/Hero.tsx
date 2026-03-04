@@ -14,6 +14,14 @@ const roles = [
 export default function Hero() {
     const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
     const [dots, setDots] = useState<{ x: number, y: number, size: number, delay: number }[]>([]);
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < 768);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     useEffect(() => {
         // Generate random dots on client side to avoid hydration mismatch
@@ -103,8 +111,8 @@ export default function Hero() {
                 transition={{ duration: 0.5, delay: 0.5 }}
                 style={{
                     position: 'absolute',
-                    top: '40px',
-                    right: '3%',
+                    top: isMobile ? '20px' : '40px',
+                    right: isMobile ? '20px' : '3%',
                     zIndex: 50,
                     display: 'flex',
                     alignItems: 'center',
@@ -130,7 +138,7 @@ export default function Hero() {
             {/* Background Aura (Moved to Left) */}
             <div className="aura-bg" style={{ left: '0%', transform: 'translate(-20%, -50%)', width: '80vw', height: '80vw' }} />
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', alignItems: 'center', width: '100%', maxWidth: '1200px', zIndex: 10 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? '2rem' : '4rem', alignItems: 'center', width: '100%', maxWidth: '1200px', zIndex: 10, textAlign: isMobile ? 'center' : 'left' }}>
 
                 {/* Left Side: Text & CTA */}
                 <div style={{ position: 'relative' }}>
@@ -146,7 +154,8 @@ export default function Hero() {
                             marginBottom: '2rem',
                             display: 'flex',
                             flexDirection: 'column',
-                            flexWrap: 'wrap'
+                            flexWrap: 'wrap',
+                            alignItems: isMobile ? 'center' : 'flex-start'
                         }}
                     >
                         <span style={{ display: 'block' }}>Hi, I'm Mohamed,</span>

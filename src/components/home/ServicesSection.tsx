@@ -75,7 +75,7 @@ export default function ServicesSection() {
                     </div>
 
                     {/* Right Side: Active Service Details Card */}
-                    <div style={{ position: 'relative', height: isMobile ? '400px' : '600px', width: '100%' }}>
+                    <div style={{ position: 'relative', minHeight: isMobile ? '500px' : '600px', height: isMobile ? 'auto' : '600px', width: '100%' }}>
                         <AnimatePresence mode="wait">
                             {mounted && (
                                 <motion.div

@@ -14,6 +14,14 @@ export default function ManifestoSection() {
     const [currentLineIndex, setCurrentLineIndex] = useState(0);
     const [displayedText, setDisplayedText] = useState("");
     const [isTyping, setIsTyping] = useState(true);
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < 768);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     useEffect(() => {
         const currentLine = manifestoLines[currentLineIndex].text;
@@ -77,7 +85,7 @@ export default function ManifestoSection() {
             alignItems: 'center',
             justifyContent: 'center',
             position: 'relative',
-            padding: '4rem 2rem',
+            padding: isMobile ? '2rem 1rem' : '4rem 2rem',
             overflow: 'hidden'
         }}>
 
