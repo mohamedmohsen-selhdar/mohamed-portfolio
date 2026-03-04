@@ -5,29 +5,33 @@ import { createClient } from "@/lib/supabase/client";
 import Footer from "@/components/layout/Footer";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { useParams } from "next/navigation";
+import Image from "next/image";
 
-export default function ArticleView({ params }: { params: { id: string } }) {
-    const [article, setArticle] = useState<{ id: string, title: string, excerpt: string, content: string, created_at: string } | null>(null);
+export default function ArticleView() {
+    const params = useParams();
+    const id = params?.id as string;
+    const [article, setArticle] = useState<{ id: string, title: string, excerpt: string, content: string, cover_image: string, created_at: string } | null>(null);
     const [loading, setLoading] = useState(true);
     const supabase = createClient();
 
     useEffect(() => {
         const fetchArticle = async () => {
+            if (!id) return;
             const { data } = await supabase
                 .from('articles')
                 .select('*')
-                .eq('id', params.id)
+                .eq('id', id)
                 .single();
 
             if (data) setArticle(data);
             setLoading(false);
         };
         fetchArticle();
-    }, [params.id, supabase]);
+    }, [id, supabase]);
 
     return (
         <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-
             <main style={{ flexGrow: 1, paddingTop: '120px', paddingBottom: '6rem', maxWidth: '800px', margin: '0 auto', width: '100%' }} className="container">
                 <Link href="/articles" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', textDecoration: 'none', marginBottom: '3rem', fontWeight: 500 }}>
                     <ArrowLeft size={18} /> Back to Articles
@@ -39,6 +43,11 @@ export default function ArticleView({ params }: { params: { id: string } }) {
                     <div style={{ padding: '2rem 0' }}>Article not found.</div>
                 ) : (
                     <article>
+                        {article.cover_image && (
+                            <div style={{ position: 'relative', width: '100%', height: '400px', marginBottom: '3rem', borderRadius: '1.5rem', overflow: 'hidden' }}>
+                                <Image src={article.cover_image} alt={article.title} fill style={{ objectFit: 'cover' }} priority />
+                            </div>
+                        )}
                         <header style={{ marginBottom: '3rem' }}>
                             <span style={{ fontSize: '1rem', color: 'var(--text-muted)', display: 'block', marginBottom: '1rem', fontWeight: 500 }}>
                                 {new Date(article.created_at).toLocaleDateString()}
@@ -51,9 +60,10 @@ export default function ArticleView({ params }: { params: { id: string } }) {
                             </p>
                         </header>
 
-                        <div style={{ fontSize: '1.125rem', lineHeight: 1.8, color: 'var(--foreground)', whiteSpace: 'pre-wrap', fontFamily: 'var(--font-primary)' }}>
-                            {article.content}
-                        </div>
+                        <div
+                            style={{ fontSize: '1.125rem', lineHeight: 1.8, color: 'var(--foreground)', fontFamily: 'var(--font-primary)' }}
+                            dangerouslySetInnerHTML={{ __html: article.content }}
+                        />
                     </article>
                 )}
             </main>
