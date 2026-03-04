@@ -2,8 +2,19 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { caseStudies } from "@/data/content";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
+
+type CaseStudyData = {
+    id: string;
+    title: string;
+    company: string;
+    context: string;
+    core_problem: string[];
+    intervention: string;
+    key_deliverables: string[];
+    measurable_impact: string[];
+};
 
 function useWindowWidth() {
     const [width, setWidth] = useState(0);
@@ -19,10 +30,23 @@ function useWindowWidth() {
 export default function CaseStudiesSection() {
     const [activeIndex, setActiveIndex] = useState(0);
     const [mounted, setMounted] = useState(false);
+    const [caseStudies, setCaseStudies] = useState<CaseStudyData[]>([]);
+    const [loading, setLoading] = useState(true);
     const windowWidth = useWindowWidth();
+
+    const supabase = createClient();
 
     useEffect(() => {
         setMounted(true);
+        const fetchStudies = async () => {
+            const { data, error } = await supabase
+                .from('case_studies')
+                .select('*')
+                .order('created_at', { ascending: true });
+            if (data) setCaseStudies(data);
+            setLoading(false);
+        };
+        fetchStudies();
     }, []);
 
     const nextCard = () => {
@@ -35,6 +59,8 @@ export default function CaseStudiesSection() {
 
     const study = caseStudies[activeIndex];
     const isMobile = mounted && windowWidth > 0 && windowWidth < 768;
+
+    if (loading && caseStudies.length === 0) return null;
 
     return (
         <section className="section container" style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
@@ -115,7 +141,9 @@ export default function CaseStudiesSection() {
                                         <h4 style={{ textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.875rem', color: 'var(--foreground)', marginBottom: '1.25rem', fontWeight: 700 }}>Core Problem</h4>
                                         <p className="text-muted" style={{ marginBottom: '1.5rem', fontStyle: 'italic', borderLeft: '2px solid var(--card-border)', paddingLeft: '1.5rem', lineHeight: 1.7 }}>"{study.context}"</p>
                                         <ul style={{ color: 'var(--text-muted)', listStylePosition: 'outside', marginLeft: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem', lineHeight: 1.6 }}>
-                                            {study.coreProblem.map((item, i) => <li key={i}>{item}</li>)}
+                                            {study.core_problem.map((item: string, i: number) => (
+                                                <li key={i}>{item}</li>
+                                            ))}
                                         </ul>
                                     </div>
 
@@ -126,7 +154,7 @@ export default function CaseStudiesSection() {
                                             <p style={{ fontSize: '1.125rem', marginTop: '0.5rem', fontWeight: 500 }}>{study.intervention}</p>
                                         </div>
                                         <ul style={{ listStylePosition: 'outside', marginLeft: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem', lineHeight: 1.6 }}>
-                                            {study.measurableImpact.map((item, i) => (
+                                            {study.measurable_impact.map((item: string, i: number) => (
                                                 <li key={i} style={{ color: 'var(--foreground)' }}>{item}</li>
                                             ))}
                                         </ul>

@@ -2,22 +2,49 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { services } from "@/data/content";
+import { createClient } from "@/lib/supabase/client";
+
+type ServiceData = {
+    id: string;
+    title: string;
+    what_i_do: string;
+    deliverables: string[];
+    expected_impact: string[];
+    projects_delivered: string;
+    project_names: string[];
+};
 
 export default function ServicesSection() {
     const [activeIndex, setActiveIndex] = useState(0);
     const [mounted, setMounted] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
+    const [services, setServices] = useState<ServiceData[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    const supabase = createClient();
 
     useEffect(() => {
         setMounted(true);
         const checkMobile = () => setIsMobile(window.innerWidth < 1024);
         checkMobile();
         window.addEventListener('resize', checkMobile);
+
+        const fetchServices = async () => {
+            const { data, error } = await supabase
+                .from('services')
+                .select('*')
+                .order('created_at', { ascending: true });
+            if (data) setServices(data);
+            setLoading(false);
+        };
+        fetchServices();
+
         return () => window.removeEventListener('resize', checkMobile);
     }, []);
 
     const activeService = services[activeIndex];
+
+    if (loading && services.length === 0) return null;
 
     return (
         <section className="section" style={{ position: 'relative', overflow: 'hidden', minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', backgroundColor: 'var(--background)', color: 'var(--foreground)', paddingTop: '100px', paddingBottom: '100px' }}>
@@ -106,12 +133,10 @@ export default function ServicesSection() {
                                             {activeService.title}
                                         </h3>
 
-                                        <p style={{ fontSize: '1.25rem', lineHeight: 1.8, color: 'var(--text-muted)', marginBottom: '3rem', whiteSpace: 'pre-line' }}>
-                                            {activeService.whatIDo}
-                                        </p>
+                                        <p className="text-xl leading-relaxed mb-8 opacity-90" dangerouslySetInnerHTML={{ __html: activeService.what_i_do }} />
 
-                                        <div>
-                                            {activeService.expectedImpact.map((benefit, idx) => (
+                                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '2rem' }}>
+                                            {activeService.expected_impact.map((benefit: string, idx: number) => (
                                                 <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
                                                     <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'var(--aura-color)' }} />
                                                     <span style={{ fontSize: '1.125rem', color: 'var(--foreground)' }}>{benefit}</span>
@@ -120,12 +145,10 @@ export default function ServicesSection() {
                                         </div>
 
                                         <div style={{ marginTop: '3rem', paddingTop: '1.5rem', borderTop: '1px solid var(--card-border)' }}>
-                                            <p style={{ fontSize: '0.875rem', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Track Record</p>
-                                            <p style={{ fontSize: '1.125rem', fontWeight: 500, color: 'var(--foreground)', marginBottom: '1.5rem' }}>{activeService.projectsDelivered}</p>
-
-                                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                                                <p style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>Key Projects</p>
-                                                {activeService.projectNames?.map((project, idx) => (
+                                            <p style={{ fontSize: '0.875rem', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '1rem' }}>Track Record</p>
+                                            <p className="text-sm uppercase tracking-wider opacity-60 mb-4">{activeService.projects_delivered}</p>
+                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
+                                                {activeService.project_names.map((project: string, idx: number) => (
                                                     <span key={idx} style={{ fontSize: '1rem', color: 'var(--foreground)', fontWeight: 600, paddingBottom: '0.25rem', borderBottom: '1px solid var(--border-subtle)' }}>
                                                         {project}
                                                     </span>
