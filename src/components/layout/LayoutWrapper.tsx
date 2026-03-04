@@ -73,6 +73,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
                         { name: 'Home', path: '/' },
                         { name: 'Services', path: '/services' },
                         { name: 'Case Studies', path: '/case-studies' },
+                        { name: 'Articles', path: '/articles' },
                         { name: 'Free Templates', path: '/free-templates' }
                     ].map((item, i) => (
                         <div key={item.name} style={{ overflow: 'hidden' }}>

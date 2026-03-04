@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Link from "next/link";
 
@@ -27,7 +26,6 @@ export default function ArticlesIndex() {
 
     return (
         <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-            <Navbar />
 
             <main style={{ flexGrow: 1, paddingTop: '120px', paddingBottom: '6rem' }} className="container">
                 <h1 style={{ fontSize: 'clamp(3rem, 6vw, 4.5rem)', fontWeight: 800, marginBottom: '1rem', letterSpacing: '-0.02em' }}>

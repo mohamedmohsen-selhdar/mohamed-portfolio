@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
@@ -28,7 +27,6 @@ export default function ArticleView({ params }: { params: { id: string } }) {
 
     return (
         <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-            <Navbar />
 
             <main style={{ flexGrow: 1, paddingTop: '120px', paddingBottom: '6rem', maxWidth: '800px', margin: '0 auto', width: '100%' }} className="container">
                 <Link href="/articles" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', textDecoration: 'none', marginBottom: '3rem', fontWeight: 500 }}>
