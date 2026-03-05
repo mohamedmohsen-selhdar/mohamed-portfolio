@@ -1,9 +1,27 @@
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-border: var(--border);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+}
 
 :root {
   --background: #050505;
   --foreground: #ffffff;
   --text-muted: #a0a0a0;
+
+  /* Custom variables for UI components */
+  --border: #27272a;
+  --muted: #18181b;
+  --muted-foreground: #a1a1aa;
+  --primary: #ffffff;
+  --primary-foreground: #000000;
 
   /* Original subtle blue/violet aura */
   --aura-color: rgba(59, 130, 246, 0.3);
@@ -17,6 +35,12 @@
   --background: #fafafa;
   --foreground: #0a0a0a;
   --text-muted: #606060;
+
+  --border: #e4e4e7;
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;
+  --primary: #000000;
+  --primary-foreground: #ffffff;
 
   /* Light mode aura overrides */
   --aura-color: rgba(59, 130, 246, 0.2);
