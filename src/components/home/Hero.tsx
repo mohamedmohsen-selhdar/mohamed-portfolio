@@ -7,14 +7,68 @@ import { Sun, Moon } from "lucide-react";
 
 
 
-const roles = [
+const loopWords = [
+    "Mohamed mohsen.",
     "business consultant.",
+    "industrial expert.",
     "problem solver.",
-    "industrial expert."
+    "solution architect."
 ];
 
+const TypewriterLoop = ({ words }: { words: string[] }) => {
+    const [text, setText] = useState("");
+    const [wordIndex, setWordIndex] = useState(0);
+    const [isDeleting, setIsDeleting] = useState(false);
+
+    useEffect(() => {
+        const currentWord = words[wordIndex];
+        let timeout: NodeJS.Timeout;
+
+        if (!isDeleting) {
+            if (text.length < currentWord.length) {
+                timeout = setTimeout(() => {
+                    setText(currentWord.slice(0, text.length + 1));
+                }, 80); // Typing speed
+            } else {
+                timeout = setTimeout(() => {
+                    setIsDeleting(true);
+                }, 2000); // Pause before deleting
+            }
+        } else {
+            if (text.length > 0) {
+                timeout = setTimeout(() => {
+                    setText(currentWord.slice(0, text.length - 1));
+                }, 40); // Deleting speed
+            } else {
+                setIsDeleting(false);
+                setWordIndex((prev) => (prev + 1) % words.length);
+            }
+        }
+        return () => clearTimeout(timeout);
+    }, [text, isDeleting, wordIndex, words]);
+
+    return (
+        <span style={{ display: 'inline-block' }}>
+            <span className="text-gradient">
+                {text}
+            </span>
+            <motion.span
+                animate={{ opacity: [1, 0] }}
+                transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }}
+                style={{
+                    display: 'inline-block',
+                    width: '3px',
+                    height: '1.1em',
+                    backgroundColor: 'var(--foreground)',
+                    verticalAlign: 'middle',
+                    marginLeft: '6px'
+                }}
+            />
+        </span>
+    );
+};
+
 export default function Hero() {
-    const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
     const [dots, setDots] = useState<{ x: number, y: number, size: number, delay: number }[]>([]);
     const [isMobile, setIsMobile] = useState(false);
 
@@ -58,12 +112,7 @@ export default function Hero() {
         }
     };
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentRoleIndex((prev) => (prev + 1) % roles.length);
-        }, 3000);
-        return () => clearInterval(interval);
-    }, []);
+
 
     return (
         <section id="home" className="container" style={{
@@ -160,46 +209,9 @@ export default function Hero() {
                             alignItems: isMobile ? 'center' : 'flex-start'
                         }}
                     >
-                        {/* Typewriter Greeting */}
-                        <div style={{ display: 'block' }}>
-                            <motion.span
-                                initial={{ opacity: 1 }}
-                                animate={{ opacity: 1 }}
-                                style={{ display: 'inline-block', whiteSpace: 'normal', wordBreak: 'keep-all' }}
-                            >
-                                {"Hi, I'm Mohamed,".split('').map((char, index) => (
-                                    <motion.span
-                                        key={index}
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        transition={{ duration: 0.1, delay: index * 0.05 }}
-                                    >
-                                        {char}
-                                    </motion.span>
-                                ))}
-                                <motion.span
-                                    animate={{ opacity: [1, 0] }}
-                                    transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }}
-                                    style={{ display: 'inline-block', width: '2px', height: '1em', backgroundColor: 'var(--foreground)', verticalAlign: 'middle', marginLeft: '2px' }}
-                                />
-                            </motion.span>
-                        </div>
-
-                        {/* Vertical Text Swapper */}
-                        <div style={{ height: '1.2em', position: 'relative', overflow: 'hidden', marginTop: '0.2em' }}>
-                            <AnimatePresence mode="popLayout">
-                                <motion.span
-                                    key={currentRoleIndex}
-                                    initial={{ y: 50, opacity: 0 }}
-                                    animate={{ y: 0, opacity: 1 }}
-                                    exit={{ y: 50, opacity: 0 }}
-                                    transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-                                    className="text-gradient"
-                                    style={{ position: 'absolute', whiteSpace: 'nowrap' }}
-                                >
-                                    {roles[currentRoleIndex]}
-                                </motion.span>
-                            </AnimatePresence>
+                        {/* Typewriter Loop */}
+                        <div style={{ display: 'block', minHeight: '1.2em' }}>
+                            <TypewriterLoop words={loopWords} />
                         </div>
                     </motion.div>
 
