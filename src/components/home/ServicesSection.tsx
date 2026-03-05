@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { GlowingEffect } from "@/components/ui/glowing-effect";
 import { Box, Lock, Sparkles, Settings, Search, Layout } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 type ServiceData = {
     id: string;
@@ -11,7 +12,22 @@ type ServiceData = {
     what_i_do: string;
 };
 
-const ICONS = [Box, Lock, Sparkles, Settings, Search, Layout];
+const ICONS = [
+    <Box key="1" className="h-4 w-4 text-white/80" />,
+    <Settings key="2" className="h-4 w-4 text-white/80" />,
+    <Lock key="3" className="h-4 w-4 text-white/80" />,
+    <Sparkles key="4" className="h-4 w-4 text-white/80" />,
+    <Search key="5" className="h-4 w-4 text-white/80" />,
+    <Layout key="6" className="h-4 w-4 text-white/80" />
+];
+
+const AREAS = [
+    "md:[grid-area:1/1/2/7] xl:[grid-area:1/1/2/5]",
+    "md:[grid-area:1/7/2/13] xl:[grid-area:2/1/3/5]",
+    "md:[grid-area:2/1/3/7] xl:[grid-area:1/5/3/8]",
+    "md:[grid-area:2/7/3/13] xl:[grid-area:1/8/2/13]",
+    "md:[grid-area:3/1/4/13] xl:[grid-area:2/8/3/13]"
+];
 
 export default function ServicesSection() {
     const [services, setServices] = useState<ServiceData[]>([]);
@@ -44,7 +60,7 @@ export default function ServicesSection() {
         <section className="py-24 bg-black w-full text-white overflow-hidden relative" id="services">
             <div className="container px-4 md:px-6 mx-auto">
                 <div className="mb-12 md:mb-20">
-                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-4">
+                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-4 text-balance">
                         How I can help you
                     </h2>
                     <p className="text-zinc-400 font-mono text-sm tracking-widest uppercase">
@@ -52,54 +68,20 @@ export default function ServicesSection() {
                     </p>
                 </div>
 
-                <ul className="grid grid-cols-1 grid-rows-none gap-4 md:grid-cols-12 md:grid-rows-3 lg:gap-6">
+                <ul className="grid grid-cols-1 grid-rows-none gap-4 md:grid-cols-12 md:grid-rows-3 lg:gap-4 xl:max-h-[34rem] xl:grid-rows-2">
                     {services.map((service, index) => {
-                        const Icon = ICONS[index % ICONS.length];
+                        const icon = ICONS[index % ICONS.length];
+                        const area = AREAS[index % AREAS.length];
                         const description = stripHtml(service.what_i_do).substring(0, 100) + "...";
 
-                        // Create bento grid layout based on index
-                        let gridClass = "md:col-span-12";
-                        if (index === 0) gridClass = "md:col-span-4 md:row-span-2"; // Tall left
-                        else if (index === 1) gridClass = "md:col-span-4 md:row-span-3"; // Taller middle
-                        else if (index === 2) gridClass = "md:col-span-4 md:row-span-2"; // Tall right
-                        else if (index === 3) gridClass = "md:col-span-4 md:row-span-1"; // Bottom left
-                        else if (index === 4) gridClass = "md:col-span-8 md:row-span-1"; // Bottom wide right
-                        else gridClass = "md:col-span-4 md:row-span-1"; // Fallback
-
-                        // Handle just 3-4 items gracefully
-                        if (services.length <= 3) {
-                            gridClass = "md:col-span-4 md:row-span-1 min-h-[300px]";
-                        }
-
                         return (
-                            <li
+                            <GridItem
                                 key={service.id}
-                                className={`relative flex flex-col justify-between rounded-2xl border border-white/5 bg-zinc-950 p-6 md:p-8 min-h-[250px] list-none ${gridClass}`}
-                            >
-                                <GlowingEffect
-                                    spread={40}
-                                    glow={true}
-                                    disabled={false}
-                                    proximity={64}
-                                    inactiveZone={0.01}
-                                    borderWidth={1.5}
-                                />
-
-                                <div className="relative z-10 flex justify-between flex-col h-full">
-                                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 border border-white/10 shadow-sm mb-12">
-                                        <Icon className="h-5 w-5 text-white/80" />
-                                    </div>
-
-                                    <div className="mt-auto">
-                                        <h3 className="text-xl md:text-2xl font-bold font-sans text-white mb-3">
-                                            {service.title}
-                                        </h3>
-                                        <p className="text-sm md:text-base text-zinc-400 leading-relaxed max-w-[90%]">
-                                            {description}
-                                        </p>
-                                    </div>
-                                </div>
-                            </li>
+                                area={area}
+                                icon={icon}
+                                title={service.title}
+                                description={description}
+                            />
                         );
                     })}
                 </ul>
@@ -107,3 +89,42 @@ export default function ServicesSection() {
         </section>
     );
 }
+
+interface GridItemProps {
+    area: string;
+    icon: React.ReactNode;
+    title: string;
+    description: React.ReactNode;
+}
+
+const GridItem = ({ area, icon, title, description }: GridItemProps) => {
+    return (
+        <li className={cn("min-h-[14rem] list-none", area)}>
+            <div className="relative h-full rounded-[1.25rem] border-[0.75px] border-zinc-800 p-2 md:rounded-[1.5rem] md:p-3">
+                <GlowingEffect
+                    spread={40}
+                    glow={true}
+                    disabled={false}
+                    proximity={64}
+                    inactiveZone={0.01}
+                    borderWidth={3}
+                />
+                <div className="relative flex h-full flex-col justify-between gap-6 overflow-hidden rounded-xl border-[0.75px] border-zinc-900 bg-zinc-950 p-6 shadow-sm dark:shadow-[0px_0px_27px_0px_rgba(45,45,45,0.3)] md:p-6">
+                    <div className="relative flex flex-1 flex-col justify-between gap-3">
+                        <div className="w-fit rounded-lg border-[0.75px] border-zinc-800 bg-black p-2">
+                            {icon}
+                        </div>
+                        <div className="space-y-3 mt-8 md:mt-16">
+                            <h3 className="pt-0.5 text-xl leading-[1.375rem] font-bold font-sans tracking-[-0.02em] md:text-2xl md:leading-[1.875rem] text-balance text-white">
+                                {title}
+                            </h3>
+                            <h2 className="font-sans text-sm leading-[1.125rem] md:text-base md:leading-[1.375rem] text-zinc-400 font-medium">
+                                {description}
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    );
+};
