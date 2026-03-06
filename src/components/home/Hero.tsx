@@ -186,19 +186,33 @@ export default function Hero() {
                 {isLightMode ? <Moon size={24} /> : <Sun size={24} />}
             </motion.button>
 
-            {/* Cinematic Sunlight Glow */}
+            {/* Cinematic Sunlight Glow - Upper Left */}
             <div style={{
                 position: 'absolute',
-                top: '-20%',
-                left: '20%',
-                width: '120vw',
-                height: '120vw',
-                background: 'radial-gradient(ellipse at 80% 20%, rgba(255, 230, 150, 0.25) 0%, rgba(255, 170, 50, 0.08) 25%, transparent 60%)',
-                filter: 'blur(80px)',
+                top: '-10%',
+                left: '-10%',
+                width: '60vw',
+                height: '60vw',
+                background: 'radial-gradient(circle at center, rgba(255, 230, 150, 0.15) 0%, rgba(255, 170, 50, 0.05) 50%, transparent 70%)',
+                filter: 'blur(100px)',
                 zIndex: 0,
                 pointerEvents: 'none',
-                transform: 'translate(-30%, -10%)'
             }} />
+
+            {/* Cinematic Sunlight Glow - Middle Background */}
+            <div style={{
+                position: 'absolute',
+                top: '50%',
+                left: '20%',
+                transform: 'translate(-50%, -50%)',
+                width: '70vw',
+                height: '70vw',
+                background: 'radial-gradient(circle at center, rgba(255, 200, 100, 0.08) 0%, transparent 60%)',
+                filter: 'blur(100px)',
+                zIndex: 0,
+                pointerEvents: 'none',
+            }} />
+
             <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? '2rem' : '4rem', alignItems: 'center', width: '100%', maxWidth: '1200px', zIndex: 10, textAlign: isMobile ? 'center' : 'left' }}>
 
                 {/* Left Side: Text & CTA */}
@@ -275,11 +289,10 @@ export default function Hero() {
                     transition={{ duration: 1, delay: 0.3 }}
                     style={{
                         position: 'relative',
-                        width: '80%', /* Made slightly smaller */
+                        width: '85%',
                         margin: '0 auto',
                         aspectRatio: '3/4',
-                        WebkitMaskImage: 'radial-gradient(ellipse at center, black 40%, transparent 80%)',
-                        maskImage: 'radial-gradient(ellipse at center, black 40%, transparent 80%)',
+                        mixBlendMode: 'lighten', // Perfectly drops the dark background of the portrait into the website background
                     }}
                 >
                     <Image
@@ -299,6 +312,6 @@ export default function Hero() {
           100% { opacity: 0.8; }
         }
       `}} />
-        </section>
+        </section >
     );
 }

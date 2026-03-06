@@ -1,8 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface Testimonial {
     id: number;
@@ -15,21 +13,21 @@ interface Testimonial {
 const testimonials: Testimonial[] = [
     {
         id: 1,
-        quote: "Mohamed's strategic intervention completely transformed our operational efficiency. His ability to drill down to the core issues and implement sustainable processes is unmatched. He didn't just give us a report; he gave us a roadmap that we execute daily.",
+        quote: "Mohamed's strategic intervention completely transformed our operational efficiency. His ability to drill down to the core issues and implement sustainable processes is unmatched.",
         author: "Mr. Abdo Shoulah",
         role: "CEO",
         company: "RICHIE Furniture"
     },
     {
         id: 2,
-        quote: "Working with Mohamed was a turning point for GP Plast. His insights into our supply chain and workflow optimization directly impacted our bottom line. He brings a rare combination of industrial expertise and practical execution.",
+        quote: "Working with Mohamed was a turning point for GP Plast. His insights into our supply chain directly impacted our bottom line. He brings a rare combination of industrial expertise and practical execution.",
         author: "Peter Magdy",
         role: "CEO",
         company: "GP Plast"
     },
     {
         id: 3,
-        quote: "The clarity and direction we gained from his consulting sessions were invaluable. He has a unique talent for taking complex business challenges and breaking them down into actionable, measurable steps that actually drive growth.",
+        quote: "The clarity and direction we gained from his consulting sessions were invaluable. He has a unique talent for taking complex business challenges and breaking them down into actionable steps.",
         author: "Ayman Hosny",
         role: "CEO",
         company: "in&In"
@@ -37,138 +35,65 @@ const testimonials: Testimonial[] = [
 ];
 
 export default function TestimonialsSection() {
-    const [activeIndex, setActiveIndex] = useState(0);
-    const [mounted, setMounted] = useState(false);
-    const [isMobile, setIsMobile] = useState(false);
-
-    useEffect(() => {
-        setMounted(true);
-        const checkMobile = () => setIsMobile(window.innerWidth < 768);
-        checkMobile();
-        window.addEventListener('resize', checkMobile);
-        return () => window.removeEventListener('resize', checkMobile);
-
-        // Auto-advance
-        const interval = setInterval(() => {
-            setActiveIndex((prev) => (prev + 1) % testimonials.length);
-        }, 6000);
-        return () => clearInterval(interval);
-    }, []);
-
-    const handleNext = () => setActiveIndex((prev) => (prev + 1) % testimonials.length);
-    const handlePrev = () => setActiveIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-
-    const activeQuote = testimonials[activeIndex];
-
     return (
-        <section className="section" style={{ position: 'relative', overflow: 'hidden', minHeight: isMobile ? '60vh' : '80vh', display: 'flex', alignItems: 'center', backgroundColor: 'var(--background)' }}>
-            <div className="container">
-
-                <div style={{ maxWidth: '900px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: isMobile ? '2rem' : '4rem' }}>
-
-                    {/* Minimal Section Label */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}
-                    >
-                        <span style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>Testimonials</span>
-                        <div style={{ height: '1px', flex: 1, backgroundColor: 'var(--card-border)' }} />
-                    </motion.div>
-
-                    {/* Massive Typography Quote Container */}
-                    <div style={{ position: 'relative', minHeight: isMobile ? '350px' : '250px' }}>
-
-                        {/* Huge decorative quote mark fixed in background */}
-                        <span style={{ position: 'absolute', top: '-4rem', left: '-2rem', fontSize: '10rem', color: 'var(--card-bg)', lineHeight: 1, zIndex: 0, pointerEvents: 'none', fontFamily: 'serif' }}>"</span>
-
-                        <AnimatePresence mode="wait">
-                            {mounted && (
-                                <motion.div
-                                    key={activeQuote.id}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, y: -20 }}
-                                    transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                                    style={{ position: 'relative', zIndex: 10 }}
-                                >
-                                    <h3 style={{
-                                        fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
-                                        fontWeight: 500,
-                                        lineHeight: 1.4,
-                                        letterSpacing: '-0.01em',
-                                        color: 'var(--foreground)'
-                                    }}>
-                                        {activeQuote.quote}
-                                    </h3>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-                    </div>
-
-                    {/* Credit Block & Navigation */}
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', borderTop: '1px solid var(--card-border)', paddingTop: '2rem' }}>
-
-                        {/* Author Info */}
-                        <div style={{ position: 'relative', overflow: 'hidden', height: '60px', flex: 1 }}>
-                            <AnimatePresence mode="wait">
-                                {mounted && (
-                                    <motion.div
-                                        key={activeQuote.id}
-                                        initial={{ opacity: 0, x: -20 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        exit={{ opacity: 0, x: 20 }}
-                                        transition={{ duration: 0.4 }}
-                                        style={{ position: 'absolute', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}
-                                    >
-                                        <p style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--foreground)', letterSpacing: '-0.02em', textTransform: 'uppercase' }}>
-                                            {activeQuote.author}
-                                        </p>
-                                        <p className="text-muted" style={{ fontSize: '0.875rem', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
-                                            {activeQuote.role} • {activeQuote.company}
-                                        </p>
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
-                        </div>
-
-                        {/* Navigation Controls */}
-                        <div style={{ display: 'flex', gap: '1rem' }}>
-                            <button
-                                onClick={handlePrev}
-                                style={{ width: '48px', height: '48px', borderRadius: '50%', border: '1px solid var(--card-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'transparent', transition: 'all 0.3s ease', cursor: 'pointer' }}
-                                onMouseEnter={(e) => {
-                                    e.currentTarget.style.backgroundColor = 'var(--foreground)';
-                                    e.currentTarget.style.color = 'var(--background)';
-                                }}
-                                onMouseLeave={(e) => {
-                                    e.currentTarget.style.backgroundColor = 'transparent';
-                                    e.currentTarget.style.color = 'var(--foreground)';
-                                }}
-                            >
-                                <ChevronLeft size={20} />
-                            </button>
-                            <button
-                                onClick={handleNext}
-                                style={{ width: '48px', height: '48px', borderRadius: '50%', border: '1px solid var(--card-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'transparent', transition: 'all 0.3s ease', cursor: 'pointer' }}
-                                onMouseEnter={(e) => {
-                                    e.currentTarget.style.backgroundColor = 'var(--foreground)';
-                                    e.currentTarget.style.color = 'var(--background)';
-                                }}
-                                onMouseLeave={(e) => {
-                                    e.currentTarget.style.backgroundColor = 'transparent';
-                                    e.currentTarget.style.color = 'var(--foreground)';
-                                }}
-                            >
-                                <ChevronRight size={20} />
-                            </button>
-                        </div>
-
-                    </div>
-
+        <section className="py-24 bg-[#0a0a0a] overflow-hidden relative" id="testimonials">
+            <div className="container mx-auto px-4 md:px-6 z-10 relative">
+                <div className="text-center mb-16 md:mb-24">
+                    <h2 className="text-4xl md:text-6xl font-sans tracking-tight text-white font-bold mb-6">
+                        Client Success
+                    </h2>
+                    <p className="text-zinc-400 text-lg max-w-2xl mx-auto">
+                        Real-world transformations driven by precision methodologies and uncompromised standards.
+                    </p>
                 </div>
             </div>
+
+            {/* Seamless Infinite Marquee Wrapper */}
+            <div className="relative w-full flex overflow-x-hidden group">
+                {/* Gradient Fades for Left and Right Edges */}
+                <div className="absolute top-0 bottom-0 left-0 w-32 bg-gradient-to-r from-[#0a0a0a] to-transparent z-20 pointer-events-none" />
+                <div className="absolute top-0 bottom-0 right-0 w-32 bg-gradient-to-l from-[#0a0a0a] to-transparent z-20 pointer-events-none" />
+
+                <div className="animate-marquee flex gap-10 px-5 items-center justify-center min-w-full">
+                    {[...testimonials, ...testimonials, ...testimonials].map((t, idx) => (
+                        <div
+                            key={idx}
+                            className="flex-shrink-0 w-[350px] md:w-[450px] p-8 md:p-10 rounded-2xl bg-[#111111] border border-[#222222] hover:border-zinc-500 transition-colors duration-500 relative cursor-default"
+                        >
+                            <span className="absolute top-6 left-6 text-6xl text-zinc-800 font-serif leading-none mt-2">"</span>
+                            <div className="relative z-10">
+                                <p className="text-zinc-300 text-lg md:text-xl leading-relaxed mb-8 mt-6">
+                                    {t.quote}
+                                </p>
+                                <div className="flex items-center gap-4 border-t border-[#222222] pt-6 mt-auto">
+                                    <div className="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center font-bold text-white uppercase">
+                                        {t.author.charAt(0)}
+                                    </div>
+                                    <div>
+                                        <h4 className="text-white font-bold text-lg">{t.author}</h4>
+                                        <p className="text-zinc-500 text-sm">{t.role}, {t.company}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            <style dangerouslySetInnerHTML={{
+                __html: `
+                .animate-marquee {
+                    animation: marquee 35s linear infinite;
+                }
+                .group:hover .animate-marquee {
+                    animation-play-state: paused;
+                }
+                @keyframes marquee {
+                    0% { transform: translateX(0); }
+                    100% { transform: translateX(-50%); }
+                }
+                `
+            }} />
         </section>
     );
 }
