@@ -58,20 +58,20 @@ export default function TestimonialsSection() {
                     {[...testimonials, ...testimonials, ...testimonials].map((t, idx) => (
                         <div
                             key={idx}
-                            className="flex-shrink-0 w-[350px] md:w-[450px] p-8 md:p-10 rounded-2xl bg-[#111111] border border-[#222222] hover:border-zinc-500 transition-colors duration-500 relative cursor-default"
+                            className="flex-shrink-0 w-[400px] md:w-[500px] p-10 md:p-12 rounded-3xl bg-[#111111] border border-[#222222] hover:border-zinc-500 transition-colors duration-500 relative cursor-default min-h-[350px] flex flex-col"
                         >
-                            <span className="absolute top-6 left-6 text-6xl text-zinc-800 font-serif leading-none mt-2">"</span>
-                            <div className="relative z-10">
-                                <p className="text-zinc-300 text-lg md:text-xl leading-relaxed mb-8 mt-6">
+                            <span className="absolute top-8 left-8 text-7xl text-zinc-800 font-serif leading-none mt-2">"</span>
+                            <div className="relative z-10 flex-1 flex flex-col">
+                                <p className="text-zinc-300 text-lg md:text-xl leading-relaxed mb-10 mt-8 flex-1">
                                     {t.quote}
                                 </p>
-                                <div className="flex items-center gap-4 border-t border-[#222222] pt-6 mt-auto">
-                                    <div className="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center font-bold text-white uppercase">
+                                <div className="flex items-center gap-5 border-t border-[#222222] pt-8 mt-auto">
+                                    <div className="w-14 h-14 rounded-full bg-zinc-800 flex items-center justify-center font-bold text-white uppercase text-xl">
                                         {t.author.charAt(0)}
                                     </div>
                                     <div>
                                         <h4 className="text-white font-bold text-lg">{t.author}</h4>
-                                        <p className="text-zinc-500 text-sm">{t.role}, {t.company}</p>
+                                        <p className="text-zinc-500 text-sm md:text-base">{t.role}, {t.company}</p>
                                     </div>
                                 </div>
                             </div>

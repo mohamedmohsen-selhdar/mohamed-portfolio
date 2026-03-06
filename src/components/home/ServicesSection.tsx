@@ -62,7 +62,7 @@ export default function ServicesSection() {
                 </div>
 
                 {/* Asymmetric Bento Box Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-[300px]">
+                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8 auto-rows-[320px]">
                     {services.map((service, index) => {
                         const description = extractPreviewText(service.what_i_do);
 
@@ -77,7 +77,7 @@ export default function ServicesSection() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                                className={`group flex flex-col p-8 rounded-[2rem] border border-[#222222] bg-[#111111] hover:bg-[#151515] transition-all duration-500 overflow-hidden relative cursor-pointer ${isLarge ? "md:col-span-2 lg:col-span-2 row-span-1 md:row-span-2" : "col-span-1 row-span-1"
+                                className={`group flex flex-col p-10 lg:p-14 rounded-[2.5rem] border border-[#222222] bg-[#111111] hover:bg-[#151515] transition-all duration-500 overflow-hidden relative cursor-pointer ${isLarge ? "md:col-span-2 lg:col-span-2 row-span-1 md:row-span-2" : "col-span-1 row-span-1"
                                     }`}
                             >
                                 {/* Futuristic Internal Glow effect */}
