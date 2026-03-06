@@ -186,9 +186,19 @@ export default function Hero() {
                 {isLightMode ? <Moon size={24} /> : <Sun size={24} />}
             </motion.button>
 
-            {/* Background Aura (Moved to Left) */}
-            <div className="aura-bg" style={{ left: '0%', transform: 'translate(-20%, -50%)', width: '80vw', height: '80vw' }} />
-
+            {/* Cinematic Sunlight Glow */}
+            <div style={{
+                position: 'absolute',
+                top: '-20%',
+                left: '20%',
+                width: '120vw',
+                height: '120vw',
+                background: 'radial-gradient(ellipse at 80% 20%, rgba(255, 230, 150, 0.25) 0%, rgba(255, 170, 50, 0.08) 25%, transparent 60%)',
+                filter: 'blur(80px)',
+                zIndex: 0,
+                pointerEvents: 'none',
+                transform: 'translate(-30%, -10%)'
+            }} />
             <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? '2rem' : '4rem', alignItems: 'center', width: '100%', maxWidth: '1200px', zIndex: 10, textAlign: isMobile ? 'center' : 'left' }}>
 
                 {/* Left Side: Text & CTA */}

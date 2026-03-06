@@ -94,13 +94,13 @@ export default function CaseStudiesSection() {
                 {/* Navigation Arrows */}
                 <button
                     onClick={prevCard}
-                    style={{ position: 'absolute', left: isMobile ? '-1rem' : '-4rem', top: '50%', transform: 'translateY(-50%)', zIndex: 30, background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '50%', width: isMobile ? '40px' : '56px', height: isMobile ? '40px' : '56px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--foreground)', backdropFilter: 'blur(10px)' }}
+                    style={{ position: 'absolute', left: isMobile ? '-1rem' : '-4rem', top: '50%', transform: 'translateY(-50%)', zIndex: 30, background: 'rgba(153, 27, 27, 0.1)', border: '1px solid rgba(153, 27, 27, 0.5)', borderRadius: '50%', width: isMobile ? '40px' : '56px', height: isMobile ? '40px' : '56px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#ef4444', backdropFilter: 'blur(10px)', boxShadow: '0 0 15px rgba(153, 27, 27, 0.5), inset 0 0 10px rgba(153, 27, 27, 0.2)' }}
                 >
                     <ChevronLeft size={isMobile ? 20 : 28} />
                 </button>
                 <button
                     onClick={nextCard}
-                    style={{ position: 'absolute', right: isMobile ? '-1rem' : '-4rem', top: '50%', transform: 'translateY(-50%)', zIndex: 30, background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '50%', width: isMobile ? '40px' : '56px', height: isMobile ? '40px' : '56px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--foreground)', backdropFilter: 'blur(10px)' }}
+                    style={{ position: 'absolute', right: isMobile ? '-1rem' : '-4rem', top: '50%', transform: 'translateY(-50%)', zIndex: 30, background: 'rgba(153, 27, 27, 0.1)', border: '1px solid rgba(153, 27, 27, 0.5)', borderRadius: '50%', width: isMobile ? '40px' : '56px', height: isMobile ? '40px' : '56px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#ef4444', backdropFilter: 'blur(10px)', boxShadow: '0 0 15px rgba(153, 27, 27, 0.5), inset 0 0 10px rgba(153, 27, 27, 0.2)' }}
                 >
                     <ChevronRight size={isMobile ? 20 : 28} />
                 </button>

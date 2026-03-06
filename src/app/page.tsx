@@ -1,6 +1,5 @@
 import Hero from "@/components/home/Hero";
 import ClientsMarquee from "@/components/home/ClientsMarquee";
-import ServicesSection from "@/components/home/ServicesSection";
 import CaseStudiesSection from "@/components/home/CaseStudiesSection";
 import ArticlesSection from "@/components/home/ArticlesSection";
 import TestimonialsSection from "@/components/home/TestimonialsSection";
@@ -13,7 +12,6 @@ export default function Home() {
       <div style={{ flex: 1 }}>
         <Hero />
         <ClientsMarquee />
-        <ServicesSection />
         <CaseStudiesSection />
         <ArticlesSection />
         <TestimonialsSection />
