@@ -30,20 +30,20 @@ type ServiceData = {
 const getIconForService = (title: string, index: number) => {
     const t = title.toLowerCase();
 
-    if (t.includes("process") || t.includes("operation")) return <Workflow className="h-6 w-6 text-white" />;
-    if (t.includes("supply chain") || t.includes("logistics")) return <Network className="h-6 w-6 text-white" />;
-    if (t.includes("organiza") || t.includes("structure")) return <Building2 className="h-6 w-6 text-white" />;
-    if (t.includes("data") || t.includes("metric") || t.includes("dashboard")) return <BarChart3 className="h-6 w-6 text-white" />;
-    if (t.includes("cost") || t.includes("price") || t.includes("margin")) return <LineChart className="h-6 w-6 text-white" />;
-    if (t.includes("digiti") || t.includes("tech") || t.includes("system")) return <Layout className="h-6 w-6 text-white" />;
-    if (t.includes("erp")) return <Settings className="h-6 w-6 text-white" />;
-    if (t.includes("manufactur") || t.includes("factor") || t.includes("production")) return <Factory className="h-6 w-6 text-white" />;
-    if (t.includes("turnaround") || t.includes("transform")) return <RefreshCcw className="h-6 w-6 text-white" />;
-    if (t.includes("growth") || t.includes("strategy")) return <TrendingUp className="h-6 w-6 text-white" />;
+    if (t.includes("process") || t.includes("operation")) return <Workflow className="h-6 w-6 transition-colors duration-300" />;
+    if (t.includes("supply chain") || t.includes("logistics")) return <Network className="h-6 w-6 transition-colors duration-300" />;
+    if (t.includes("organiza") || t.includes("structure")) return <Building2 className="h-6 w-6 transition-colors duration-300" />;
+    if (t.includes("data") || t.includes("metric") || t.includes("dashboard")) return <BarChart3 className="h-6 w-6 transition-colors duration-300" />;
+    if (t.includes("cost") || t.includes("price") || t.includes("margin")) return <LineChart className="h-6 w-6 transition-colors duration-300" />;
+    if (t.includes("digiti") || t.includes("tech") || t.includes("system")) return <Layout className="h-6 w-6 transition-colors duration-300" />;
+    if (t.includes("erp")) return <Settings className="h-6 w-6 transition-colors duration-300" />;
+    if (t.includes("manufactur") || t.includes("factor") || t.includes("production")) return <Factory className="h-6 w-6 transition-colors duration-300" />;
+    if (t.includes("turnaround") || t.includes("transform")) return <RefreshCcw className="h-6 w-6 transition-colors duration-300" />;
+    if (t.includes("growth") || t.includes("strategy")) return <TrendingUp className="h-6 w-6 transition-colors duration-300" />;
 
     const fallbacks = [
-        <Briefcase key="0" className="h-6 w-6 text-white" />,
-        <Box key="1" className="h-6 w-6 text-white" />,
+        <Briefcase key="0" className="h-6 w-6 transition-colors duration-300" />,
+        <Box key="1" className="h-6 w-6 transition-colors duration-300" />,
     ];
     return fallbacks[index % fallbacks.length];
 };
@@ -105,12 +105,12 @@ export default function ServicesSection() {
                         return (
                             <div
                                 key={service.id}
-                                className="group flex flex-col p-8 rounded-2xl border border-zinc-800 bg-zinc-950/50 hover:bg-zinc-900 transition-colors duration-300"
+                                className="group flex flex-col p-8 rounded-3xl border border-zinc-800 bg-zinc-950/50 hover:bg-slate-900/40 hover:border-yellow-600/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] cursor-pointer"
                             >
-                                <div className="h-12 w-12 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center mb-6 group-hover:bg-zinc-800 transition-colors">
+                                <div className="h-12 w-12 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center mb-6 text-zinc-300 group-hover:bg-yellow-600/10 group-hover:border-yellow-600/30 group-hover:text-yellow-500 transition-all duration-300">
                                     {icon}
                                 </div>
-                                <h3 className="text-xl md:text-2xl font-sans font-semibold text-white mb-4">
+                                <h3 className="text-xl md:text-2xl font-sans font-semibold text-white mb-4 group-hover:text-yellow-500 transition-colors duration-300">
                                     {service.title}
                                 </h3>
                                 <p className="font-sans text-base text-zinc-400 leading-relaxed">
