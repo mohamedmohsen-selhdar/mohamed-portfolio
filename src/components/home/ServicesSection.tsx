@@ -2,20 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
-import {
-    Briefcase,
-    Workflow,
-    Network,
-    Building2,
-    BarChart3,
-    LineChart,
-    Layout,
-    Settings,
-    Factory,
-    RefreshCcw,
-    TrendingUp,
-    Box
-} from "lucide-react";
+import { Check } from "lucide-react";
 
 type ServiceData = {
     id: string;
@@ -26,31 +13,10 @@ type ServiceData = {
     what_you_get: string;
 };
 
-// Smart icon mapping based on keywords in the service title
-const getIconForService = (title: string, index: number) => {
-    const t = title.toLowerCase();
-
-    if (t.includes("process") || t.includes("operation")) return <Workflow className="h-6 w-6 transition-colors duration-300" />;
-    if (t.includes("supply chain") || t.includes("logistics")) return <Network className="h-6 w-6 transition-colors duration-300" />;
-    if (t.includes("organiza") || t.includes("structure")) return <Building2 className="h-6 w-6 transition-colors duration-300" />;
-    if (t.includes("data") || t.includes("metric") || t.includes("dashboard")) return <BarChart3 className="h-6 w-6 transition-colors duration-300" />;
-    if (t.includes("cost") || t.includes("price") || t.includes("margin")) return <LineChart className="h-6 w-6 transition-colors duration-300" />;
-    if (t.includes("digiti") || t.includes("tech") || t.includes("system")) return <Layout className="h-6 w-6 transition-colors duration-300" />;
-    if (t.includes("erp")) return <Settings className="h-6 w-6 transition-colors duration-300" />;
-    if (t.includes("manufactur") || t.includes("factor") || t.includes("production")) return <Factory className="h-6 w-6 transition-colors duration-300" />;
-    if (t.includes("turnaround") || t.includes("transform")) return <RefreshCcw className="h-6 w-6 transition-colors duration-300" />;
-    if (t.includes("growth") || t.includes("strategy")) return <TrendingUp className="h-6 w-6 transition-colors duration-300" />;
-
-    const fallbacks = [
-        <Briefcase key="0" className="h-6 w-6 transition-colors duration-300" />,
-        <Box key="1" className="h-6 w-6 transition-colors duration-300" />,
-    ];
-    return fallbacks[index % fallbacks.length];
-};
-
 export default function ServicesSection() {
     const [services, setServices] = useState<ServiceData[]>([]);
     const [loading, setLoading] = useState(true);
+    const [activeIndex, setActiveIndex] = useState(0);
     const supabase = createClient();
 
     useEffect(() => {
@@ -66,61 +32,107 @@ export default function ServicesSection() {
         fetchServices();
     }, []);
 
-    // Helper to extract clean text for preview
-    const extractPreviewText = (html: string) => {
-        if (!html) return "";
-        if (typeof document === 'undefined') {
-            return html
-                .replace(/<[^>]+>/g, ' ')
-                .replace(/\\n/g, ' ')
-                .replace(/\n/g, ' ')
-                .replace(/\s+/g, ' ')
-                .trim();
-        }
-        const doc = new DOMParser().parseFromString(html, 'text/html');
-        return (doc.body.textContent || "")
-            .replace(/\\n/g, ' ')
-            .replace(/\n/g, ' ')
-            .replace(/\s+/g, ' ')
-            .trim();
+    // Helper to get checkmark list from what_you_get
+    const getHighlights = (text: string) => {
+        if (!text) return [];
+        return text.split(/\\n|\n|<br\s*\/?>/g).filter(p => p.trim().length > 0);
     };
 
     if (loading && services.length === 0) return null;
 
     return (
-        <section className="py-24 bg-black w-full text-white" id="services">
+        <section className="py-24 bg-[#0a0a0a] w-full text-white" id="services">
             <div className="container mx-auto px-4 md:px-6 max-w-7xl">
-                <div className="mb-16 md:mb-20">
-                    <h2 className="text-4xl md:text-5xl lg:text-7xl font-sans tracking-tight text-white font-bold leading-tight">
-                        How I can help you
+
+                {/* Section Header */}
+                <div className="mb-16 md:mb-20 text-center flex flex-col items-center">
+                    <h2 className="text-3xl md:text-5xl lg:text-6xl font-sans tracking-tight font-bold mb-6">
+                        Consulting Capabilities
                     </h2>
+                    <p className="text-zinc-400 text-lg md:text-xl max-w-3xl leading-relaxed">
+                        From single strategy sessions to full-scale problem resolution, our expert methodologies deliver tangible results exactly when you need them.
+                    </p>
                 </div>
 
-                {/* Traditional Simple Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
-                    {services.map((service, index) => {
-                        const icon = getIconForService(service.title, index);
-                        const description = extractPreviewText(service.what_i_do);
+                <div className="flex flex-col md:flex-row gap-6 lg:gap-8 w-full mt-10">
 
-                        return (
-                            <div
-                                key={service.id}
-                                className="group flex flex-col p-8 rounded-3xl border border-zinc-800 bg-zinc-950/50 hover:bg-slate-900/40 hover:border-yellow-600/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] cursor-pointer"
-                            >
-                                <div className="h-12 w-12 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center mb-6 text-zinc-300 group-hover:bg-yellow-600/10 group-hover:border-yellow-600/30 group-hover:text-yellow-500 transition-all duration-300">
-                                    {icon}
-                                </div>
-                                <h3 className="text-xl md:text-2xl font-sans font-semibold text-white mb-4 group-hover:text-yellow-500 transition-colors duration-300">
+                    {/* Left side: Vertical Tabs */}
+                    <div className="flex flex-row md:flex-col w-full md:w-[280px] lg:w-[320px] overflow-x-auto hide-scrollbar shrink-0 pb-4 md:pb-0">
+                        {services.map((service, index) => {
+                            const isActive = index === activeIndex;
+                            return (
+                                <button
+                                    key={service.id}
+                                    onClick={() => setActiveIndex(index)}
+                                    className={`text-left px-5 py-5 transition-all duration-300 whitespace-nowrap md:whitespace-normal font-sans text-sm md:text-base lg:text-[1.05rem] rounded-none ${isActive
+                                            ? "bg-[#18181b] border-l-[3px] border-white text-white font-medium"
+                                            : "border-l-[3px] border-transparent text-zinc-500 hover:text-zinc-300"
+                                        }`}
+                                >
                                     {service.title}
-                                </h3>
-                                <p className="font-sans text-base text-zinc-400 leading-relaxed">
-                                    {description}
-                                </p>
+                                </button>
+                            );
+                        })}
+                    </div>
+
+                    {/* Right side: Content Card */}
+                    <div className="flex-1 w-full min-h-[500px]">
+                        {services.length > 0 && services[activeIndex] && (
+                            <div className="bg-[#111111] border border-[#222222] rounded-2xl p-8 md:p-12 w-full h-full relative flex flex-col justify-between">
+
+                                {/* Inner Top Right Button */}
+                                <div className="absolute top-8 right-8 hidden md:block z-10">
+                                    <button className="px-5 py-2.5 rounded-lg border border-[#333333] text-sm font-medium text-zinc-300 hover:text-white hover:border-white transition-all duration-300">
+                                        Learn More
+                                    </button>
+                                </div>
+
+                                <div className="w-full lg:w-[80%] pr-0 md:pr-12 relative z-10">
+                                    {/* The title - First half white, second half gray */}
+                                    {(() => {
+                                        const words = services[activeIndex].title.split(" ");
+                                        const half = Math.ceil(words.length / 2);
+                                        const firstHalf = words.slice(0, half).join(" ");
+                                        const secondHalf = words.slice(half).join(" ");
+                                        return (
+                                            <h3 className="text-2xl md:text-3xl lg:text-4xl font-sans font-semibold mb-6 leading-tight tracking-tight">
+                                                <span className="text-white block md:inline">{firstHalf} </span>
+                                                <span className="text-zinc-500 block md:inline">{secondHalf}</span>
+                                            </h3>
+                                        );
+                                    })()}
+
+                                    {/* Description */}
+                                    <div className="text-zinc-400 text-base md:text-lg leading-relaxed mb-10 mt-6 md:mt-10"
+                                        dangerouslySetInnerHTML={{ __html: services[activeIndex].what_i_do.replace(/\\n/g, '<br/>') }}
+                                    />
+
+                                    {/* Features Checkmark List */}
+                                    <div className="flex flex-col gap-4 mt-8 md:mt-12">
+                                        {getHighlights(services[activeIndex].what_you_get).map((highlight, index) => (
+                                            <div key={index} className="flex items-start gap-4">
+                                                <Check className="w-5 h-5 text-white mt-1 shrink-0" />
+                                                <div
+                                                    className="text-zinc-300 text-base md:text-[1.05rem] leading-relaxed font-medium"
+                                                    dangerouslySetInnerHTML={{ __html: highlight }}
+                                                />
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Background Image/Gradient Space placeholder on the right side */}
+                                <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-[#18181b] to-transparent opacity-50 z-0 pointer-events-none rounded-r-2xl hidden lg:block" />
                             </div>
-                        );
-                    })}
+                        )}
+                    </div>
                 </div>
             </div>
+            <style dangerouslySetInnerHTML={{
+                __html: `
+                .hide-scrollbar::-webkit-scrollbar { display: none; }
+                .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+            `}} />
         </section>
     );
 }
