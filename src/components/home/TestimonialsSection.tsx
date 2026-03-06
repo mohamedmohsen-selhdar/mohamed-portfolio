@@ -49,10 +49,10 @@ export default function TestimonialsSection() {
         return () => window.removeEventListener('resize', checkMobile);
 
         // Auto-advance
-        // const interval = setInterval(() => {
-        //     setActiveIndex((prev) => (prev + 1) % testimonials.length);
-        // }, 6000);
-        // return () => clearInterval(interval);
+        const interval = setInterval(() => {
+            setActiveIndex((prev) => (prev + 1) % testimonials.length);
+        }, 6000);
+        return () => clearInterval(interval);
     }, []);
 
     const handleNext = () => setActiveIndex((prev) => (prev + 1) % testimonials.length);

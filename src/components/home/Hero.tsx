@@ -278,9 +278,8 @@ export default function Hero() {
                         width: '80%', /* Made slightly smaller */
                         margin: '0 auto',
                         aspectRatio: '3/4',
-                        borderRadius: '2rem',
-                        overflow: 'hidden',
-                        /* Reverted to opaque image */
+                        WebkitMaskImage: 'radial-gradient(ellipse at center, black 40%, transparent 80%)',
+                        maskImage: 'radial-gradient(ellipse at center, black 40%, transparent 80%)',
                     }}
                 >
                     <Image
