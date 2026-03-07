@@ -9,7 +9,6 @@ const mockTestimonials: TestimonialType[] = [
         by: "Mr. Abdo Shoulah",
         role: "CEO",
         company: "RICHIE Furniture",
-        imgSrc: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=200&auto=format&fit=crop"
     },
     {
         tempId: 2,
@@ -17,7 +16,6 @@ const mockTestimonials: TestimonialType[] = [
         by: "Peter Magdy",
         role: "CEO",
         company: "GP Plast",
-        imgSrc: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=200&auto=format&fit=crop"
     },
     {
         tempId: 3,
@@ -25,23 +23,20 @@ const mockTestimonials: TestimonialType[] = [
         by: "Ayman Hosny",
         role: "CEO",
         company: "in&In",
-        imgSrc: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=200&auto=format&fit=crop"
     },
     {
         tempId: 4,
         testimonial: "Every time we hit a production bottleneck, Mohamed's engineering frameworks help us map the exact root cause. We operate at a completely different efficiency level now.",
-        by: "Khaled Samy",
-        role: "Head of Manufacturing",
-        company: "SteelWorks Ind.",
-        imgSrc: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop"
+        by: "M.Saad",
+        role: "CEO",
+        company: "Alamain outdoor furniture",
     },
     {
         tempId: 5,
         testimonial: "He doesn't just provide consulting; he provides actual execution architecture. We scaled our regional distribution by 3X entirely through his optimization roadmaps.",
-        by: "Sarah Tarek",
-        role: "Director of Operations",
-        company: "LogisTech",
-        imgSrc: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=200&auto=format&fit=crop"
+        by: "Mohamed El-sharkawy",
+        role: "CEO",
+        company: "APT Sharky",
     }
 ];
 

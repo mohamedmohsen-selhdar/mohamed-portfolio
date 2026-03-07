@@ -13,7 +13,6 @@ export type TestimonialType = {
     by: string;
     role: string;
     company: string;
-    imgSrc: string;
 };
 
 interface TestimonialCardProps {
@@ -35,7 +34,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
         <div
             onClick={() => handleMove(position)}
             className={cn(
-                "absolute left-1/2 top-1/2 cursor-pointer border p-8 md:p-10 transition-all duration-500 ease-in-out flex flex-col justify-between",
+                "absolute left-1/2 top-1/2 cursor-pointer border p-10 md:p-14 transition-all duration-500 ease-in-out flex flex-col justify-between",
                 isCenter
                     ? "z-10 bg-[#111111] text-white border-zinc-500"
                     : "z-0 bg-[#0a0a0a] text-zinc-500 border-[#222222] hover:border-[#333333]"
@@ -66,37 +65,42 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
                 }}
             />
             <div className="relative z-10">
-                <div className="mb-6 h-14 w-14 rounded-full overflow-hidden border border-[#333333]" style={{ boxShadow: isCenter ? "3px 3px 0px rgba(153, 27, 27, 0.7)" : "none" }}>
-                    <Image
-                        src={testimonial.imgSrc}
-                        alt={`${testimonial.by}`}
-                        width={56}
-                        height={56}
-                        className="object-cover object-top w-full h-full grayscale brightness-75 contrast-125"
-                    />
+                <div className="mb-6 h-16 w-16 rounded-full border border-[#333333] flex items-center justify-center bg-zinc-800" style={{ boxShadow: isCenter ? "3px 3px 0px rgba(153, 27, 27, 0.7)" : "none" }}>
+                    <span className="text-2xl font-bold font-sans text-zinc-300 uppercase" style={{ fontFamily: 'var(--font-cairo), sans-serif' }}>
+                        {testimonial.by.charAt(0)}
+                    </span>
                 </div>
-                <h3 className={cn(
-                    "text-base md:text-xl font-medium leading-relaxed font-sans",
-                    isCenter ? "text-white" : "text-zinc-400"
-                )}>
+                <h3
+                    className={cn(
+                        "text-lg md:text-2xl font-bold leading-relaxed",
+                        isCenter ? "text-white" : "text-zinc-400"
+                    )}
+                    style={{ fontFamily: 'var(--font-cairo), sans-serif' }}
+                >
                     "{testimonial.testimonial}"
                 </h3>
             </div>
 
             <div className={cn(
-                "mt-6 border-t pt-4",
+                "mt-8 border-t pt-6",
                 isCenter ? "border-[#333333]" : "border-[#1a1a1a]"
             )}>
-                <p className={cn(
-                    "text-base font-bold",
-                    isCenter ? "text-white" : "text-zinc-500"
-                )}>
+                <p
+                    className={cn(
+                        "text-xl font-bold",
+                        isCenter ? "text-white" : "text-zinc-500"
+                    )}
+                    style={{ fontFamily: 'var(--font-cairo), sans-serif' }}
+                >
                     {testimonial.by}
                 </p>
-                <p className={cn(
-                    "text-sm",
-                    isCenter ? "text-zinc-400" : "text-zinc-600"
-                )}>
+                <p
+                    className={cn(
+                        "text-base mt-1",
+                        isCenter ? "text-zinc-400" : "text-zinc-600 font-normal"
+                    )}
+                    style={{ fontFamily: 'var(--font-cairo), sans-serif', fontWeight: 400 }}
+                >
                     {testimonial.role}, {testimonial.company}
                 </p>
             </div>
@@ -129,13 +133,21 @@ export const StaggerTestimonials: React.FC<{ initialTestimonials: TestimonialTyp
     useEffect(() => {
         const updateSize = () => {
             const { matches } = window.matchMedia("(min-width: 640px)");
-            setCardSize(matches ? 400 : 320);
+            setCardSize(matches ? 460 : 360);
         };
 
         updateSize();
         window.addEventListener("resize", updateSize);
         return () => window.removeEventListener("resize", updateSize);
     }, []);
+
+    // Autoplay Loop
+    useEffect(() => {
+        const interval = setInterval(() => {
+            handleMove(1);
+        }, 5000); // loops every 5 seconds
+        return () => clearInterval(interval);
+    }, [testimonialsList]);
 
     return (
         <div
