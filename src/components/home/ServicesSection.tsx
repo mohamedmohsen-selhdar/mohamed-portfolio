@@ -61,14 +61,10 @@ export default function ServicesSection() {
                     </div>
                 </div>
 
-                {/* Asymmetric Bento Box Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8 auto-rows-[320px]">
+                {/* Uniform Glass Box Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {services.map((service, index) => {
                         const description = extractPreviewText(service.what_i_do);
-
-                        // Create a benchmark UI Bento pattern 
-                        // Large box every ~4 items
-                        const isLarge = index === 0 || index === 3 || index === 7;
 
                         return (
                             <motion.div
@@ -77,27 +73,33 @@ export default function ServicesSection() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                                className={`group flex flex-col p-10 lg:p-14 rounded-[2.5rem] border border-[#222222] bg-[#111111] hover:bg-[#151515] transition-all duration-500 overflow-hidden relative cursor-pointer ${isLarge ? "md:col-span-2 lg:col-span-2 row-span-1 md:row-span-2" : "col-span-1 row-span-1"
-                                    }`}
+                                className={`group flex flex-col p-10 lg:p-12 rounded-[2rem] transition-all duration-500 overflow-hidden relative cursor-pointer min-h-[350px]`}
+                                style={{
+                                    backdropFilter: 'blur(10px) saturate(180%)',
+                                    WebkitBackdropFilter: 'blur(10px) saturate(180%)',
+                                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                                    boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)'
+                                }}
                             >
                                 {/* Futuristic Internal Glow effect */}
-                                <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-gradient-to-br from-[#2a2a2a] to-transparent opacity-0 group-hover:opacity-20 blur-[50px] transition-opacity duration-700 pointer-events-none rounded-full" />
+                                <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-gradient-to-br from-[#ffffff] to-transparent opacity-0 group-hover:opacity-10 blur-[50px] transition-opacity duration-700 pointer-events-none rounded-full" />
 
-                                <div className={`flex items-center justify-between mb-8 ${isLarge ? 'md:mb-12' : ''}`}>
-                                    <div className="h-12 w-12 rounded-xl bg-[#0a0a0a] border border-[#333333] flex items-center justify-center text-zinc-300 group-hover:border-white group-hover:text-white transition-all duration-300">
-                                        <Box size={20} />
+                                <div className={`flex items-center justify-between mb-8`}>
+                                    <div className="h-14 w-14 rounded-xl bg-transparent border border-white/20 flex items-center justify-center text-zinc-300 group-hover:border-white group-hover:text-white transition-all duration-300">
+                                        <Box size={24} />
                                     </div>
-                                    <div className="h-10 w-10 flex items-center justify-center text-zinc-600 group-hover:text-white -rotate-45 group-hover:rotate-0 transition-all duration-300">
+                                    <div className="h-10 w-10 flex items-center justify-center text-zinc-400 group-hover:text-white -rotate-45 group-hover:rotate-0 transition-all duration-300">
                                         <ArrowRight size={24} />
                                     </div>
                                 </div>
 
-                                <div className="mt-auto relative z-10">
-                                    <h3 className={`font-sans font-bold text-white mb-4 ${isLarge ? 'text-3xl md:text-4xl leading-tight' : 'text-xl'}`}>
+                                <div className="mt-auto relative z-10 flex-1 flex flex-col justify-end">
+                                    <h3 style={{ fontFamily: 'var(--font-cairo), sans-serif' }} className={`font-bold text-white mb-4 text-2xl md:text-3xl leading-tight`}>
                                         {service.title}
                                     </h3>
 
-                                    <p className={`font-sans text-zinc-400 leading-relaxed ${isLarge ? 'text-lg line-clamp-3' : 'text-sm line-clamp-2'}`}>
+                                    <p style={{ fontFamily: 'var(--font-cairo), sans-serif', fontWeight: 400 }} className={`text-zinc-300 bg-transparent leading-relaxed text-base line-clamp-3`}>
                                         {description}
                                     </p>
                                 </div>
