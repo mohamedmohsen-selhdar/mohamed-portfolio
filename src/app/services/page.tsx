@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { services } from "@/data/content";
+import Link from "next/link";
 
 export default function ServicesPage() {
     return (
@@ -19,21 +20,22 @@ export default function ServicesPage() {
                 </p>
             </motion.div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '2rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem' }}>
                 {services.map((service, i) => (
-                    <motion.div
-                        key={service.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2 + i * 0.1, duration: 0.5 }}
-                        className="aura-card"
-                        style={{ padding: '2rem' }}
-                    >
-                        <h2 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '1rem' }}>{service.title}</h2>
-                        <p className="text-muted" style={{ marginBottom: '1.5rem', lineHeight: 1.6, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                            {service.whatIDo}
-                        </p>
-                    </motion.div>
+                    <Link key={service.id} href={`/services/${service.id}`} style={{ textDecoration: 'none' }}>
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.2 + i * 0.1, duration: 0.5 }}
+                            className="aura-card"
+                            style={{ padding: '2rem', height: '100%' }}
+                        >
+                            <h2 style={{ fontFamily: 'var(--font-cairo), sans-serif', fontSize: '1.5rem', fontWeight: 700, marginBottom: '1rem', color: 'white' }}>{service.title}</h2>
+                            <p className="text-muted" style={{ fontFamily: 'var(--font-cairo), sans-serif', fontWeight: 400, marginBottom: '1.5rem', lineHeight: 1.6, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                                {service.whatIDo}
+                            </p>
+                        </motion.div>
+                    </Link>
                 ))}
             </div>
         </main>
