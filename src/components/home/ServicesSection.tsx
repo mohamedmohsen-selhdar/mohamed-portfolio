@@ -61,8 +61,8 @@ export default function ServicesSection() {
                     </div>
                 </div>
 
-                {/* Uniform Glass Box Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {/* Services Grid matching main /services page */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '2rem' }}>
                     {services.map((service, index) => {
                         const description = extractPreviewText(service.what_i_do);
 
@@ -73,33 +73,14 @@ export default function ServicesSection() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                                className={`group flex flex-col p-10 lg:p-12 rounded-[2rem] transition-all duration-500 overflow-hidden relative cursor-pointer min-h-[350px]`}
-                                style={{
-                                    backdropFilter: 'blur(10px) saturate(180%)',
-                                    WebkitBackdropFilter: 'blur(10px) saturate(180%)',
-                                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                                    border: '1px solid rgba(255, 255, 255, 0.2)',
-                                    boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)'
-                                }}
+                                className="aura-card"
+                                style={{ padding: '2rem', cursor: 'pointer' }}
                             >
-                                {/* Futuristic Internal Glow effect */}
-                                <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-gradient-to-br from-[#ffffff] to-transparent opacity-0 group-hover:opacity-10 blur-[50px] transition-opacity duration-700 pointer-events-none rounded-full" />
-
-                                <div className={`flex items-center justify-between mb-8`}>
-                                    <div className="h-14 w-14 rounded-xl bg-transparent border border-white/20 flex items-center justify-center text-zinc-300 group-hover:border-white group-hover:text-white transition-all duration-300">
-                                        <Box size={24} />
-                                    </div>
-                                    <div className="h-10 w-10 flex items-center justify-center text-zinc-400 group-hover:text-white -rotate-45 group-hover:rotate-0 transition-all duration-300">
-                                        <ArrowRight size={24} />
-                                    </div>
-                                </div>
-
-                                <div className="mt-auto relative z-10 flex-1 flex flex-col justify-end">
-                                    <h3 style={{ fontFamily: 'var(--font-cairo), sans-serif' }} className={`font-bold text-white mb-4 text-2xl md:text-3xl leading-tight`}>
+                                <div style={{ minHeight: '120px' }}>
+                                    <h2 style={{ fontFamily: 'var(--font-cairo), sans-serif', fontSize: '1.5rem', fontWeight: 700, marginBottom: '1rem', color: 'white' }}>
                                         {service.title}
-                                    </h3>
-
-                                    <p style={{ fontFamily: 'var(--font-cairo), sans-serif', fontWeight: 400 }} className={`text-zinc-300 bg-transparent leading-relaxed text-base line-clamp-3`}>
+                                    </h2>
+                                    <p className="text-muted" style={{ fontFamily: 'var(--font-cairo), sans-serif', fontWeight: 400, marginBottom: '1.5rem', lineHeight: 1.6, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                                         {description}
                                     </p>
                                 </div>
