@@ -80,11 +80,11 @@ export default function Hero() {
     }, []);
 
     useEffect(() => {
-        // Generate random dots on client side to avoid hydration mismatch
-        const newDots = Array.from({ length: 20 }).map(() => ({
+        // Generate random dots/diamonds on client side to avoid hydration mismatch
+        const newDots = Array.from({ length: 30 }).map(() => ({
             x: Math.random() * 100,
             y: Math.random() * 100,
-            size: Math.random() * 4 + 2,
+            size: Math.random() * 8 + 4, // Make them slightly larger so we can see the square/diamond shapes clearly
             delay: Math.random() * 5
         }));
         setDots(newDots);
@@ -123,20 +123,21 @@ export default function Hero() {
             position: 'relative',
             paddingTop: '80px',
             overflow: 'hidden',
-            backgroundColor: 'var(--background)',
-            color: 'var(--foreground)',
-            transition: 'background-color 0.3s ease, color 0.3s ease'
+            background: isLightMode ? 'linear-gradient(to bottom, #0a0a0a 0%, #0a0a0a 40%, #fafafa 100%)' : 'var(--background)',
+            color: isLightMode ? '#ffffff' : 'var(--foreground)', // Force white text over the black part of the gradient
+            transition: 'background 0.5s ease, color 0.3s ease'
         }}>
-            {/* Floating Dots */}
+            {/* Floating Diamonds/Squares */}
             {dots.map((dot, i) => (
                 <motion.div
                     key={i}
                     animate={{
-                        y: [0, -30, 0],
-                        opacity: [0.2, 0.8, 0.2]
+                        y: [0, -50, 0],
+                        opacity: [0.1, 0.6, 0.1],
+                        rotate: [45, 90, 45] // Rotate like a diamond
                     }}
                     transition={{
-                        duration: Math.random() * 3 + 4,
+                        duration: Math.random() * 4 + 5,
                         repeat: Infinity,
                         delay: dot.delay,
                         ease: "easeInOut"
@@ -147,9 +148,10 @@ export default function Hero() {
                         top: `${dot.y}%`,
                         width: `${dot.size}px`,
                         height: `${dot.size}px`,
-                        backgroundColor: 'var(--foreground)',
-                        borderRadius: '50%',
-                        zIndex: 1
+                        backgroundColor: isLightMode ? 'rgba(255,255,255,0.7)' : 'var(--foreground)',
+                        borderRadius: isLightMode ? '2px' : '50%',
+                        zIndex: 1,
+                        filter: isLightMode && i % 3 === 0 ? 'blur(3px)' : 'none' // Random blurred squares for cinematic depth
                     }}
                 />
             ))}
@@ -243,8 +245,7 @@ export default function Hero() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.4 }}
-                        style={{ fontSize: '1.25rem', lineHeight: 1.6, maxWidth: '500px', marginBottom: '3rem' }}
-                        className="text-muted"
+                        style={{ fontSize: '1.25rem', lineHeight: 1.6, maxWidth: '500px', marginBottom: '3rem', color: isLightMode ? '#cccccc' : 'var(--text-muted)' }}
                     >
                         I help SMEs optimize operations, reduce costs, and accelerate growth through precision execution.
                     </motion.p>
