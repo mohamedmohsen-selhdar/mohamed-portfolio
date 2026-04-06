@@ -1,0 +1,60 @@
+name: Generate Map Poster
+
+on:
+  workflow_dispatch:
+    inputs:
+      city:
+        description: 'City Name'
+        required: true
+        type: string
+      country:
+        description: 'Country Name'
+        required: true
+        type: string
+      theme:
+        description: 'Theme (e.g., noir, ocean, terracotta)'
+        required: false
+        default: 'noir'
+        type: string
+      filename:
+        description: 'Output filename'
+        required: true
+        type: string
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          cd maptoposter
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run MapToPoster
+        run: |
+          cd maptoposter
+          python create_map_poster.py -c "${{ github.event.inputs.city }}" -C "${{ github.event.inputs.country }}" -t "${{ github.event.inputs.theme }}"
+          
+          # By default, it generates posters in maptoposter/posters. Let's move it to public/posters
+          mkdir -p ../public/posters
+          mv posters/* ../public/posters/${{ github.event.inputs.filename }}.png || echo "No poster found"
+
+      - name: Commit and Push
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add public/posters/${{ github.event.inputs.filename }}.png
+          git commit -m "Auto-generated map poster for ${{ github.event.inputs.city }}" || exit 0
+          git push

@@ -60,6 +60,9 @@ export default function Navbar() {
             </button>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
+                <Link href="/maptoposter" style={{ fontSize: '0.875rem', fontWeight: 500, color: 'var(--foreground)' }}>
+                    MapToPoster
+                </Link>
                 <Link href="/" style={{ fontSize: '1.25rem', fontWeight: 800, letterSpacing: '-0.02em', background: 'var(--foreground)', color: 'var(--background)', padding: '0.2rem 0.6rem', borderRadius: '4px' }}>
                     M.M.
                 </Link>
