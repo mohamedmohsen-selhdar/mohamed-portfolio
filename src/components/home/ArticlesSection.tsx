@@ -16,9 +16,11 @@ type Article = {
 export default function ArticlesSection() {
     const [articles, setArticles] = useState<Article[]>([]);
     const [loading, setLoading] = useState(true);
+    const [mounted, setMounted] = useState(false);
     const supabase = createClient();
 
     useEffect(() => {
+        setMounted(true);
         const fetchLatestArticles = async () => {
             const { data } = await supabase
                 .from('articles')
@@ -72,7 +74,7 @@ export default function ArticlesSection() {
                             }}
                         >
                             <span style={{ fontSize: '0.875rem', color: 'var(--text-muted)', marginBottom: '1rem', display: 'block' }}>
-                                {new Date(article.created_at).toLocaleDateString()}
+                                {mounted ? new Date(article.created_at).toLocaleDateString() : ""}
                             </span>
                             <h3 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '1rem', lineHeight: 1.3 }}>
                                 <Link href={`/articles/${article.id}`} style={{ color: 'var(--foreground)', textDecoration: 'none' }}>

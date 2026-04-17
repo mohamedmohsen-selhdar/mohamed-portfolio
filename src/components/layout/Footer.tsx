@@ -1,8 +1,15 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { Linkedin, Mail } from "lucide-react";
 
 export default function Footer() {
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
     return (
         <footer style={{
             borderTop: '1px solid rgba(255, 255, 255, 0.05)',
@@ -37,7 +44,7 @@ export default function Footer() {
                 </div>
 
                 <p className="text-muted" style={{ fontSize: '0.875rem' }}>
-                    © {new Date().getFullYear()} Mohamed Mohsen. All rights reserved.
+                    © {mounted ? new Date().getFullYear() : "2024"} Mohamed Mohsen. All rights reserved.
                 </p>
             </div>
         </footer>

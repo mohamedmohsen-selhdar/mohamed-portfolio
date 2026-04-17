@@ -33,14 +33,22 @@ export default function ServicesSection() {
         fetchServices();
     }, []);
 
-    // Helper to extract clean text for preview
+    // Helper to extract clean text for preview - Standardized to use regex for consistency between server and client
     const extractPreviewText = (html: string) => {
         if (!html) return "";
-        if (typeof document === 'undefined') {
-            return html.replace(/<[^>]+>/g, ' ').replace(/\\n/g, ' ').replace(/\n/g, ' ').replace(/\s+/g, ' ').trim();
-        }
-        const doc = new DOMParser().parseFromString(html, 'text/html');
-        return (doc.body.textContent || "").replace(/\\n/g, ' ').replace(/\n/g, ' ').replace(/\s+/g, ' ').trim();
+        // Use a consistent regex-based approach for both SSR and CSR to avoid hydration mismatches
+        return html
+            .replace(/<[^>]+>/g, ' ')
+            .replace(/&nbsp;/g, ' ')
+            .replace(/&amp;/g, '&')
+            .replace(/&lt;/g, '<')
+            .replace(/&gt;/g, '>')
+            .replace(/&quot;/g, '"')
+            .replace(/&#39;/g, "'")
+            .replace(/\\n/g, ' ')
+            .replace(/\n/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
     };
 
     if (loading && services.length === 0) return null;
@@ -63,7 +71,7 @@ export default function ServicesSection() {
                 </div>
 
                 {/* Services Grid matching main /services page */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem md:gap-2rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem' }}>
                     {services.map((service, index) => {
                         const description = extractPreviewText(service.what_i_do);
 

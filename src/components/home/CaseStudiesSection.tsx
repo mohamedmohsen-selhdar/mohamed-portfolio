@@ -60,7 +60,9 @@ export default function CaseStudiesSection() {
     const study = caseStudies[activeIndex];
     const isMobile = mounted && windowWidth > 0 && windowWidth < 768;
 
-    if (loading && caseStudies.length === 0) return null;
+    if (loading) return null;
+    if (caseStudies.length === 0) return null; // Or show a fallback UI
+    if (!study) return null; // Extra safety
 
     return (
         <section className="section container" style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
