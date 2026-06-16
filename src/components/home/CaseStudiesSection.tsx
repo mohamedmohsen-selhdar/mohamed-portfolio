@@ -4,16 +4,20 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { caseStudies as localCaseStudies } from "@/data/content";
 
 type CaseStudyData = {
     id: string;
     title: string;
     company: string;
     context: string;
-    core_problem: string[];
+    core_problem?: string[];
+    coreProblem?: string[]; // local fallback
     intervention: string;
-    key_deliverables: string[];
-    measurable_impact: string[];
+    key_deliverables?: string[];
+    keyDeliverables?: string[]; // local fallback
+    measurable_impact?: string[];
+    measurableImpact?: string[]; // local fallback
 };
 
 function useWindowWidth() {
@@ -39,12 +43,22 @@ export default function CaseStudiesSection() {
     useEffect(() => {
         setMounted(true);
         const fetchStudies = async () => {
-            const { data, error } = await supabase
-                .from('case_studies')
-                .select('*')
-                .order('created_at', { ascending: true });
-            if (data) setCaseStudies(data);
-            setLoading(false);
+            try {
+                const { data } = await supabase
+                    .from('case_studies')
+                    .select('*')
+                    .order('created_at', { ascending: true });
+                if (data && data.length > 0) {
+                    setCaseStudies(data);
+                } else {
+                    setCaseStudies(localCaseStudies as any[]);
+                }
+            } catch (error) {
+                console.error("Error fetching case studies, falling back to local:", error);
+                setCaseStudies(localCaseStudies as any[]);
+            } finally {
+                setLoading(false);
+            }
         };
         fetchStudies();
     }, []);
@@ -63,6 +77,9 @@ export default function CaseStudiesSection() {
     if (loading) return null;
     if (caseStudies.length === 0) return null; // Or show a fallback UI
     if (!study) return null; // Extra safety
+
+    const coreProblem = study.core_problem || study.coreProblem || [];
+    const measurableImpact = study.measurable_impact || study.measurableImpact || [];
 
     return (
         <section className="section container" style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
@@ -143,7 +160,7 @@ export default function CaseStudiesSection() {
                                         <h4 style={{ textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.875rem', color: 'var(--foreground)', marginBottom: '1.25rem', fontWeight: 700 }}>Core Problem</h4>
                                         <p className="text-muted" style={{ marginBottom: '1.5rem', fontStyle: 'italic', borderLeft: '2px solid var(--card-border)', paddingLeft: '1.5rem', lineHeight: 1.7 }}>"{study.context}"</p>
                                         <ul style={{ color: 'var(--text-muted)', listStylePosition: 'outside', marginLeft: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem', lineHeight: 1.6 }}>
-                                            {study.core_problem.map((item: string, i: number) => (
+                                            {coreProblem.map((item: string, i: number) => (
                                                 <li key={i}>{item}</li>
                                             ))}
                                         </ul>
@@ -156,7 +173,7 @@ export default function CaseStudiesSection() {
                                             <p style={{ fontSize: '1.125rem', marginTop: '0.5rem', fontWeight: 500 }}>{study.intervention}</p>
                                         </div>
                                         <ul style={{ listStylePosition: 'outside', marginLeft: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem', lineHeight: 1.6 }}>
-                                            {study.measurable_impact.map((item: string, i: number) => (
+                                            {measurableImpact.map((item: string, i: number) => (
                                                 <li key={i} style={{ color: 'var(--foreground)' }}>{item}</li>
                                             ))}
                                         </ul>
@@ -170,4 +187,5 @@ export default function CaseStudiesSection() {
         </section>
     );
 }
+
 

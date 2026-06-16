@@ -5,14 +5,16 @@ import { createClient } from "@/lib/supabase/client";
 import { ArrowRight, Box } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { services as localServices } from "@/data/content";
 
 type ServiceData = {
     id: string;
     title: string;
     what_i_do: string;
-    who_this_is_for: string;
-    when_to_hire_me: string;
-    what_you_get: string;
+    who_this_is_for?: string;
+    when_to_hire_me?: string;
+    what_you_get?: string;
+    whatIDo?: string; // local fallback field
 };
 
 export default function ServicesSection() {
@@ -22,13 +24,23 @@ export default function ServicesSection() {
 
     useEffect(() => {
         const fetchServices = async () => {
-            const { data } = await supabase
-                .from('services')
-                .select('*')
-                .order('created_at', { ascending: true });
+            try {
+                const { data } = await supabase
+                    .from('services')
+                    .select('*')
+                    .order('created_at', { ascending: true });
 
-            if (data) setServices(data);
-            setLoading(false);
+                if (data && data.length > 0) {
+                    setServices(data);
+                } else {
+                    setServices(localServices as any[]);
+                }
+            } catch (error) {
+                console.error("Error fetching services, falling back to local:", error);
+                setServices(localServices as any[]);
+            } finally {
+                setLoading(false);
+            }
         };
         fetchServices();
     }, []);
@@ -36,7 +48,6 @@ export default function ServicesSection() {
     // Helper to extract clean text for preview - Standardized to use regex for consistency between server and client
     const extractPreviewText = (html: string) => {
         if (!html) return "";
-        // Use a consistent regex-based approach for both SSR and CSR to avoid hydration mismatches
         return html
             .replace(/<[^>]+>/g, ' ')
             .replace(/&nbsp;/g, ' ')
@@ -51,7 +62,8 @@ export default function ServicesSection() {
             .trim();
     };
 
-    if (loading && services.length === 0) return null;
+    if (loading) return null;
+    if (services.length === 0) return null;
 
     return (
         <section className="py-24 bg-[#0a0a0a] w-full text-white relative overflow-hidden" id="services">
@@ -73,7 +85,7 @@ export default function ServicesSection() {
                 {/* Services Grid matching main /services page */}
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem' }}>
                     {services.map((service, index) => {
-                        const description = extractPreviewText(service.what_i_do);
+                        const description = extractPreviewText(service.what_i_do || service.whatIDo || "");
 
                         return (
                             <Link key={service.id} href={`/services/${service.id}`} style={{ textDecoration: 'none' }}>
@@ -102,3 +114,4 @@ export default function ServicesSection() {
         </section>
     );
 }
+
